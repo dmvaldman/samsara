@@ -28,6 +28,8 @@ responds to a user's swipe gesture, then you might want to clone this repo.
 
 ### Getting Started
 
+[![Join the chat at https://gitter.im/dmvaldman/samsara](https://badges.gitter.im/dmvaldman/samsara.svg)](https://gitter.im/dmvaldman/samsara?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 | Resources      ||
 | -------------- | ------------- |
 | Walkthrough    | [samsaraJS.org/docs](http://www.samsaraJS.org/docs)  |
