@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
-    var samsara = require('samsara');
-    var View = samsara.View;
-    var DrawerLayout = samsara.DrawerLayout;
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var DrawerLayout = Samsara.DrawerLayout;
 
     var NavBar = require('./NavBar');
     var Drawer = require('./Drawer');

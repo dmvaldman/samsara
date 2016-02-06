@@ -1,10 +1,10 @@
 define(function (require, exports, module) {
-    var samsara = require('samsara');
-    var View = samsara.View;
-    var Transform = samsara.Transform;
-    var Transitionable = samsara.Transitionable;
-    var Surface = samsara.Surface;
-    var Stream = samsara.Stream;
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Transform = Samsara.Transform;
+    var Transitionable = Samsara.Transitionable;
+    var Surface = Samsara.Surface;
+    var Stream = Samsara.Stream;
 
     // Creates and lays out the `Surfaces` for the application.
     // Responsible for coordinating both physics and easing

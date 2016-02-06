@@ -1,9 +1,9 @@
 define(function (require, exports, module) {
-    var samsara = require('samsara');
-    var View = samsara.View;
-    var Surface = samsara.Surface;
-    var Transform = samsara.Transform;
-    var Transitionable = samsara.Transitionable;
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Surface = Samsara.Surface;
+    var Transform = Samsara.Transform;
+    var Transitionable = Samsara.Transitionable;
 
     // Define a cube with top, bottom, left, right, front and back sides.
     // The length of the cube is a `Transitionable` which can animate.

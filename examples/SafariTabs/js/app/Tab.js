@@ -1,8 +1,8 @@
 define(function (require, exports, module) {
-    var samsara = require('samsara');
-    var View = samsara.View;
-    var Surface = samsara.Surface;
-    var Transform = samsara.Transform;
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Surface = Samsara.Surface;
+    var Transform = Samsara.Transform;
 
     // Represents a tab with title bar, image of the website and eventing
     // logic to close and select a tab.

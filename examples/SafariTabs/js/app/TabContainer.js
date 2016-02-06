@@ -1,10 +1,10 @@
 define(function(require, exports, module) {
-    var samsara = require('samsara');
-    var View = samsara.View;
-    var Transform = samsara.Transform;
-    var Surface = samsara.Surface;
-    var Transitionable = samsara.Transitionable;
-    var Stream = samsara.Stream;
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Transform = Samsara.Transform;
+    var Surface = Samsara.Surface;
+    var Transitionable = Samsara.Transitionable;
+    var Stream = Samsara.Stream;
     var Tab = require('./Tab');
 
     // The `TabContainer` handles the communication between the `Tab`

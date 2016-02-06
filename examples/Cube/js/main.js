@@ -1,9 +1,9 @@
 define(function(require, exports, module) {
-    var samsara = require('samsara');
-    var Context = samsara.Context;
+    var Samsara = require('samsara');
+    var Context = Samsara.Context;
     var Cube = require('./app/Cube');
-    var Transform = samsara.Transform;
-    var Transitionable = samsara.Transitionable;
+    var Transform = Samsara.Transform;
+    var Transitionable = Samsara.Transitionable;
 
     // Angle to rotate cube by
     var angle = new Transitionable(0);
