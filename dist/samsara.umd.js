@@ -3942,18 +3942,6 @@
         }
     }
 
-
-
-    var Core = Object.freeze({
-    	Engine: Engine,
-    	LayoutNode: LayoutNode,
-    	SizeNode: SizeNode,
-    	Timer: Timer,
-    	Transform: Transform,
-    	Transitionable: Transitionable,
-    	View: View
-    });
-
     var usePrefix$2 = !('transform' in document.documentElement.style);
     var devicePixelRatio = 2 * (window.devicePixelRatio || 1);
     var MIN_OPACITY = 0.0001;
@@ -5253,24 +5241,6 @@
         return Context.prototype.add.apply(this.context, arguments);
     };
 
-
-
-    var DOM = Object.freeze({
-    	Surface: Surface,
-    	ContainerSurface: ContainerSurface,
-    	Context: Context
-    });
-
-
-
-    var Events = Object.freeze({
-    	EventEmitter: EventEmitter,
-    	EventHandler: EventHandler,
-    	EventMapper: EventMapper,
-    	EventFilter: EventFilter,
-    	EventSplitter: EventSplitter
-    });
-
     // Global registry of input constructors. Append only.
     var registry = {};
 
@@ -6535,18 +6505,6 @@
         this._previousDistance = currDist;
     };
 
-
-
-    var Inputs = Object.freeze({
-    	GenericInput: GenericInput,
-    	MouseInput: MouseInput,
-    	TouchInput: TouchInput,
-    	ScrollInput: ScrollInput,
-    	ScaleInput: ScaleInput,
-    	RotateInput: RotateInput,
-    	PinchInput: PinchInput
-    });
-
     /**
      * Differential is a Stream that emits differentials of consecutive
      *  input values.
@@ -7619,42 +7577,6 @@
         });
     }
 
-
-
-    var Layouts = Object.freeze({
-    	DrawerLayout: DrawerLayout,
-    	FlexibleLayout: FlexibleLayout,
-    	GridLayout: GridLayout,
-    	SequentialLayout: SequentialLayout,
-    	Scrollview: Scrollview
-    });
-
-
-
-    var Streams = Object.freeze({
-    	Accumulator: Accumulator,
-    	Differential: Differential,
-    	SimpleStream: SimpleStream,
-    	Stream: Stream,
-    	Observable: Observable,
-    	SizeObservable: SizeObservable
-    });
-
-
-
-    var Transitions = Object.freeze({
-    	Tween: Tween,
-    	Spring: Spring,
-    	Inertia: Inertia
-    });
-
-    exports.Core = Core;
-    exports.DOM = DOM;
-    exports.Events = Events;
-    exports.Inputs = Inputs;
-    exports.Layouts = Layouts;
-    exports.Streams = Streams;
-    exports.Transitions = Transitions;
     exports.Engine = Engine;
     exports.LayoutNode = LayoutNode;
     exports.SizeNode = SizeNode;

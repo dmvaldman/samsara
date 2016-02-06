@@ -3936,18 +3936,6 @@ function setOptions(options){
     }
 }
 
-
-
-var Core = Object.freeze({
-	Engine: Engine,
-	LayoutNode: LayoutNode,
-	SizeNode: SizeNode,
-	Timer: Timer,
-	Transform: Transform,
-	Transitionable: Transitionable,
-	View: View
-});
-
 var usePrefix$2 = !('transform' in document.documentElement.style);
 var devicePixelRatio = 2 * (window.devicePixelRatio || 1);
 var MIN_OPACITY = 0.0001;
@@ -5247,24 +5235,6 @@ ContainerSurface.prototype.add = function add() {
     return Context.prototype.add.apply(this.context, arguments);
 };
 
-
-
-var DOM = Object.freeze({
-	Surface: Surface,
-	ContainerSurface: ContainerSurface,
-	Context: Context
-});
-
-
-
-var Events = Object.freeze({
-	EventEmitter: EventEmitter,
-	EventHandler: EventHandler,
-	EventMapper: EventMapper,
-	EventFilter: EventFilter,
-	EventSplitter: EventSplitter
-});
-
 // Global registry of input constructors. Append only.
 var registry = {};
 
@@ -6529,18 +6499,6 @@ PinchInput.prototype._moveUpdate = function _moveUpdate(diffTime) {
     this._previousDistance = currDist;
 };
 
-
-
-var Inputs = Object.freeze({
-	GenericInput: GenericInput,
-	MouseInput: MouseInput,
-	TouchInput: TouchInput,
-	ScrollInput: ScrollInput,
-	ScaleInput: ScaleInput,
-	RotateInput: RotateInput,
-	PinchInput: PinchInput
-});
-
 /**
  * Differential is a Stream that emits differentials of consecutive
  *  input values.
@@ -7613,33 +7571,4 @@ function handleDrag(velocity){
     });
 }
 
-
-
-var Layouts = Object.freeze({
-	DrawerLayout: DrawerLayout,
-	FlexibleLayout: FlexibleLayout,
-	GridLayout: GridLayout,
-	SequentialLayout: SequentialLayout,
-	Scrollview: Scrollview
-});
-
-
-
-var Streams = Object.freeze({
-	Accumulator: Accumulator,
-	Differential: Differential,
-	SimpleStream: SimpleStream,
-	Stream: Stream,
-	Observable: Observable,
-	SizeObservable: SizeObservable
-});
-
-
-
-var Transitions = Object.freeze({
-	Tween: Tween,
-	Spring: Spring,
-	Inertia: Inertia
-});
-
-export { Core, DOM, Events, Inputs, Layouts, Streams, Transitions, Engine, LayoutNode, SizeNode, Timer, Transform, Transitionable, View, Surface, ContainerSurface, Context, EventEmitter, EventHandler, EventMapper, EventFilter, EventSplitter, GenericInput, MouseInput, TouchInput, ScrollInput, ScaleInput, RotateInput, PinchInput, DrawerLayout, FlexibleLayout, GridLayout, SequentialLayout, Scrollview, Accumulator, Differential, SimpleStream, Stream, Observable, SizeObservable, Tween, Spring, Inertia };
+export { Engine, LayoutNode, SizeNode, Timer, Transform, Transitionable, View, Surface, ContainerSurface, Context, EventEmitter, EventHandler, EventMapper, EventFilter, EventSplitter, GenericInput, MouseInput, TouchInput, ScrollInput, ScaleInput, RotateInput, PinchInput, DrawerLayout, FlexibleLayout, GridLayout, SequentialLayout, Scrollview, Accumulator, Differential, SimpleStream, Stream, Observable, SizeObservable, Tween, Spring, Inertia };

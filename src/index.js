@@ -13,5 +13,3 @@ export * from './inputs/index.js';
 export * from './layouts/index.js';
 export * from './streams/index.js';
 export * from './transitions/index.js';
-
-export { Core, DOM, Events, Inputs, Layouts, Streams, Transitions };
