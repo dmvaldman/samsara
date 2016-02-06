@@ -1,0 +1,37 @@
+/* Copyright © 2015 David Valdman */
+
+.samsara-context {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    -webkit-transform-style: preserve-3d;
+       -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+    -webkit-backface-visibility: hidden;
+           -moz-backface-visibility: hidden;
+                backface-visibility: hidden;
+}
+
+.samsara-container {
+    -webkit-transform-style: preserve-3d;
+       -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+}
+
+.samsara-surface {
+    position: absolute;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-backface-visibility: visible;
+       -moz-backface-visibility: visible;
+            backface-visibility: visible;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+.samsara-scrollable {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+            overflow-scrolling: touch;
+}

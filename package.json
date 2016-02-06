@@ -12,7 +12,7 @@
     "docs-examples": "npm run docs-example-logo && npm run docs-example-sidemenu",
     "docs-example-logo": "docco -l parallel examples/Logo/js/main.js examples/Logo/js/app/*.js -o examples/Logo/docs",
     "docs-example-sidemenu": "docco -l parallel examples/SideMenu/js/main.js examples/SideMenu/js/app/*.js -o examples/SideMenu/docs",
-    "build": "npm run build:umd && npm run build:es && npm run build-min",
+    "build": "npm run build:umd && npm run build:es && npm run build-min && cp src/samsara.css dist",
     "build:umd": "rollup -i src/index.js -o dist/samsara.umd.js -f umd -n Samsara",
     "build:es": "rollup -i src/index.js -o dist/samsara.es.js -f es6",
     "build-min": "uglifyjs dist/samsara.umd.js -o dist/samsara.min.js -cm warnings=false"
