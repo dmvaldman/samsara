@@ -1,7 +1,8 @@
 define(function(require, exports, module) {
-    var View = require('samsara/core/View');
-    var Transform = require('samsara/core/Transform');
-    var Surface = require('samsara/dom/Surface');
+    var samsara = require('samsara');
+    var View = samsara.View;
+    var Transform = samsara.Transform;
+    var Surface = samsara.Surface;
 
     // The Drawer is the side panel that gets exposed by
     // translating the content.

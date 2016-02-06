@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
-    var Surface = require('samsara/dom/Surface');
-    var View = require('samsara/core/View');
+    var samsara = require('samsara');
+    var Surface = samsara.Surface;
+    var View = samsara.View;
 
     // Defines the navigation bar. Listens to the Drawer Layout
     // and sends these events to the navigation items.

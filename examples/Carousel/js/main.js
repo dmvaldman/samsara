@@ -1,5 +1,5 @@
 define(function (require, exports, module) {
-    var Context = require('samsara/dom/Context');
+    var Context = require('samsara').Context;
     var Carousel = require('./app/Carousel');
 
     // Install [FT's fastclick](https://github.com/ftlabs/fastclick) for iOS devices to get around the 300ms click delay

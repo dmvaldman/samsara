@@ -1,9 +1,10 @@
 define(function (require, exports, module) {
-    var View = require('samsara/core/View');
-    var Transform = require('samsara/core/Transform');
-    var Transitionable = require('samsara/core/Transitionable');
-    var Surface = require('samsara/dom/Surface');
-    var Stream = require('samsara/streams/Stream');
+    var samsara = require('samsara');
+    var View = samsara.View;
+    var Transform = samsara.Transform;
+    var Transitionable = samsara.Transitionable;
+    var Surface = samsara.Surface;
+    var Stream = samsara.Stream;
 
     // Creates and lays out the `Surfaces` for the application.
     // Responsible for coordinating both physics and easing
@@ -28,7 +29,7 @@ define(function (require, exports, module) {
             // One takes an easing curve, the other a spring
             this.easingTransition = new Transitionable(0);
             this.springTransition = new Transitionable(0);
-            
+
             this.toggle = false; // Boolean indicating the state of the animation
 
             // Add all the elements to the render subtree

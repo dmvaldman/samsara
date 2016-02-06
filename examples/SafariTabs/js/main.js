@@ -1,5 +1,5 @@
 define(function (require, exports, module) {
-    var Context = require('samsara/dom/Context');
+    var Context = require('samsara').Context;
     var SafariTabs = require('./app/SafariTabs');
 
     // This demo mimics the Safari tab viewer on iOS.

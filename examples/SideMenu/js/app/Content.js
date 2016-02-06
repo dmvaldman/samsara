@@ -1,8 +1,9 @@
 define(function(require, exports, module) {
-    var View = require('samsara/core/View');
-    var Transform = require('samsara/core/Transform');
-    var Surface = require('samsara/dom/Surface');
-    var GenericInput = require('samsara/inputs/GenericInput');
+    var samsara = require('samsara');
+    var View = samsara.View;
+    var Transform = samsara.Transform;
+    var Surface = samsara.Surface;
+    var GenericInput = samsara.GenericInput;
 
     // The Content is the large area composed of a blue background
     // and spinning hand. It responds to user input, (either mouse or touch).

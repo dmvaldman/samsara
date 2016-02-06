@@ -1,7 +1,8 @@
 define(function (require, exports, module) {
-    var View = require('samsara/core/View');
-    var Surface = require('samsara/dom/Surface');
-    var Scrollview = require('samsara/layouts/Scrollview');
+    var samsara = require('samsara');
+    var View = samsara.View;
+    var Surface = samsara.Surface;
+    var Scrollview = samsara.Scrollview;
 
     var Dots = require('./Dots');
     var Arrows = require('./Arrows');

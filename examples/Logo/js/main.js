@@ -1,5 +1,5 @@
 define(function (require, exports, module) {
-    var Context = require('samsara/dom/Context');
+    var Context = require('samsara').Context;
     var Logo = require('./app/Logo');
 
     // Create the logo
