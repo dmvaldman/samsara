@@ -5976,7 +5976,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    GenericInput.register = function register(inputObject) {
 	        for (var key in inputObject){
 	            if (registry[key]){
-	                if (registry[key] === inputObject[key]) return; // redundant registration
+	                if (registry[key] === inputObject[key]) continue; // redundant registration
 	                else throw new Error('this key is registered to a different input class');
 	            }
 	            else registry[key] = inputObject[key];
@@ -8040,7 +8040,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     *  @constructor
 	     *  @extends Core.View
 	     *  @param [options] {Object}                           Options
-	     *  @param options.itemsByRow {Array|Object}            Number of items per row, or an object of {width : itemsByRow} pairs
+	     *  @param options.itemsPerRow {Array|Object}            Number of items per row, or an object of {width : itemsPerRow} pairs
 	     *  @param [options.gutter=0] {Transitionable|Number}   Gap space between successive items
 	     */
 	    var GridLayout = View.extend({

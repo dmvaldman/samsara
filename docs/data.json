@@ -1715,8 +1715,8 @@
                     "optional": true,
                     "props": [
                         {
-                            "name": "itemsByRow",
-                            "description": "Number of items per row, or an object of {width : itemsByRow} pairs",
+                            "name": "itemsPerRow",
+                            "description": "Number of items per row, or an object of {width : itemsPerRow} pairs",
                             "type": "Array|Object"
                         },
                         {
