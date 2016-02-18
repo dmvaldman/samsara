@@ -1,8 +1,9 @@
 define(function(require, exports, module) {
-    var Context = require('samsara/dom/Context');
+    var Samsara = require('samsara');
+    var Context = Samsara.Context;
     var Cube = require('./app/Cube');
-    var Transform = require('samsara/core/Transform');
-    var Transitionable = require('samsara/core/Transitionable');
+    var Transform = Samsara.Transform;
+    var Transitionable = Samsara.Transitionable;
 
     // Angle to rotate cube by
     var angle = new Transitionable(0);

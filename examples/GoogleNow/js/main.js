@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
-    var Context = require('samsara/dom/Context');
+    var Samsara = require('samsara');
+    var Context = Samsara.Context;
     var App = require('./app/App');
 
     // This demo showcases coordinating several animations together,

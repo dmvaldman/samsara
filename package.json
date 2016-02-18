@@ -4,16 +4,18 @@
   "url": "http://samsaraJS.org",
   "author": "David Valdman <dmvaldman@gmail.com>",
   "version": "0.2.0",
-  "main": "dist/samsara.js",
+  "main": "dist/samsara.umd.js",
+  "jsnext:main": "dist/samsara.es.js",
   "scripts": {
     "test": "node_modules/.bin/intern-client config=tests/intern reporters=Pretty",
     "docs": "yuidoc ./samsara -t ./node_modules/yuidoc-bootstrap-theme -H ./node_modules/yuidoc-bootstrap-theme/helpers/helpers.js -o ./docs",
     "docs-examples": "npm run docs-example-logo && npm run docs-example-sidemenu",
     "docs-example-logo": "docco -l parallel examples/Logo/js/main.js examples/Logo/js/app/*.js -o examples/Logo/docs",
     "docs-example-sidemenu": "docco -l parallel examples/SideMenu/js/main.js examples/SideMenu/js/app/*.js -o examples/SideMenu/docs",
-    "build": "npm run build-bundle && npm run build-min",
-    "build-bundle": "webpack --entry ./samsara/index.js --output-filename samsara.js --output-path ./dist --output-library Samsara --output-library-target umd",
-    "build-min": "uglifyjs dist/samsara.js -o dist/samsara.min.js --mangle --compress warnings=false"
+    "build": "npm run build:umd && npm run build:es && npm run build-min && cp src/samsara.css dist",
+    "build:umd": "rollup -i src/index.js -o dist/samsara.umd.js -f umd -n Samsara",
+    "build:es": "rollup -i src/index.js -o dist/samsara.es.js -f es6",
+    "build-min": "uglifyjs dist/samsara.umd.js -o dist/samsara.min.js -cm warnings=false"
   },
   "repository": {
     "type": "git",
@@ -43,8 +45,8 @@
   "homepage": "https://github.com/dmvaldman/samsara#readme",
   "devDependencies": {
     "intern": "^3.0.6",
+    "rollup": "^0.25.2",
     "uglify-js": "^2.6.1",
-    "webpack": "^1.12.9",
     "yuidoc-bootstrap-theme": "dmvaldman/yuidoc-bootstrap-theme",
     "yuidocjs": "^0.9.0"
   }

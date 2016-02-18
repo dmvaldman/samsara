@@ -1,9 +1,10 @@
 define(function (require, exports, module) {
-    var View = require('samsara/core/View');
-    var Transform = require('samsara/core/Transform');
-    var Surface = require('samsara/dom/Surface');
-    var Transitionable = require('samsara/core/Transitionable');
-    var SequentialLayout = require('samsara/layouts/SequentialLayout');
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Transform = Samsara.Transform;
+    var Surface = Samsara.Surface;
+    var Transitionable = Samsara.Transitionable;
+    var SequentialLayout = Samsara.SequentialLayout;
 
     var Dots = View.extend({
         defaults: {

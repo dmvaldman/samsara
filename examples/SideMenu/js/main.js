@@ -1,8 +1,9 @@
 define(function (require, exports, module) {
-    var Context = require('samsara/dom/Context');
-    var MouseInput = require('samsara/inputs/MouseInput'); // wraps DOM mouse events
-    var TouchInput = require('samsara/inputs/TouchInput'); // wraps DOM touch events
-    var GenericInput = require('samsara/inputs/GenericInput'); // unifies multiple input sources
+    var Samsara = require('samsara');
+    var Context = Samsara.Context;
+    var MouseInput = Samsara.MouseInput; // wraps DOM mouse events
+    var TouchInput = Samsara.TouchInput; // wraps DOM touch events
+    var GenericInput = Samsara.GenericInput; // unifies multiple input sources
     var App = require('./app/App'); // load our application view
 
     // Load [FT's fastclick](https://github.com/ftlabs/fastclick) for iOS devices to get around the 300ms click delay
@@ -35,4 +36,3 @@ define(function (require, exports, module) {
     // Mount context to `document.body`
     context.mount(document.body);
 });
-

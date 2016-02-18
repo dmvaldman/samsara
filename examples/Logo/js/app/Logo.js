@@ -1,7 +1,8 @@
 define(function (require, exports, module) {
-    var View = require('samsara/core/View');
-    var Transform = require('samsara/core/Transform');
-    var Transitionable = require('samsara/core/Transitionable');
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Transform = Samsara.Transform;
+    var Transitionable = Samsara.Transitionable;
     var Wedge = require('./Wedge');
 
     var App = View.extend({

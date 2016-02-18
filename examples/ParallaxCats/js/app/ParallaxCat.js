@@ -1,8 +1,9 @@
 define(function(require, exports, module) {
-    var View = require('samsara/core/View');
-    var Transform = require('samsara/core/Transform');
-    var Surface = require('samsara/dom/Surface');
-    var ContainerSurface = require('samsara/dom/ContainerSurface');
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Transform = Samsara.Transform;
+    var Surface = Samsara.Surface;
+    var ContainerSurface = Samsara.ContainerSurface;
 
     // ParallaxCat is a single image in the ParallaxCats scrollview
     // It listens to the scrollview's progress and translates accordingly

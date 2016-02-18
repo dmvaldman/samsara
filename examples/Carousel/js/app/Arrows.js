@@ -1,7 +1,8 @@
 define(function (require, exports, module) {
-    var View = require('samsara/core/View');
-    var Surface = require('samsara/dom/Surface');
-    var Transitionable = require('samsara/core/Transitionable');
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Surface = Samsara.Surface;
+    var Transitionable = Samsara.Transitionable;
 
     var Arrows = View.extend({
         defaults : {

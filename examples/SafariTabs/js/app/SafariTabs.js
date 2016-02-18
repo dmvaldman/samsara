@@ -1,7 +1,8 @@
 define(function (require, exports, module) {
-    var View = require('samsara/core/View');
-    var Surface = require('samsara/dom/Surface');
-    var Scrollview = require('samsara/layouts/Scrollview');
+    var Samsara = require('samsara');
+    var View = Samsara.View;
+    var Surface = Samsara.Surface;
+    var Scrollview = Samsara.Scrollview;
     var TabContainer = require('./TabContainer');
 
     // A `Scrollview` consisting of tabs. Tabs can be selected
