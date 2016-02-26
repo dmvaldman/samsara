@@ -23,7 +23,7 @@ define(function(require, exports, module) {
      *  @extends Core.View
      *  @param [options] {Object}                           Options
      *  @param options.itemsPerRow {Array|Object}            Number of items per row, or an object of {width : itemsPerRow} pairs
-     *  @param [options.gutter=0] {Transitionable|Number}   Gap space between successive items
+     *  @param [options.gutter=0] {Transitionable|Number|Transitionable([x,y])|Number[x,y]}   Gap space between successive items.  For different x and y gutters, use the array forms 
      */
     var GridLayout = View.extend({
         defaults : {
@@ -32,12 +32,25 @@ define(function(require, exports, module) {
         },
         events : {},
         initialize : function initialize(options){
-            var gutter = (options.gutter instanceof Transitionable)
-                ? options.gutter
-                : new Transitionable(options.gutter);
+            var gutter;
+
+            if (!Array.isArray(options.gutter)) {
+              gutter = (options.gutter instanceof Transitionable) ? options.gutter : new Transitionable(options.gutter);
+            } else {
+              gutter = new Transitionable(options.gutter);
+            }
 
             this.stream = Stream.lift(function(size, gutter){
                 if (!size) return false; // TODO: fix bug
+
+                var gutter_x, gutter_y;
+
+                if (Array.isArray(gutter)) {
+                  gutter_x = gutter[0];
+                  gutter_y = gutter[1];
+                } else {
+                  gutter_x = gutter_y = gutter;
+                }
 
                 var width = size[0];
                 var height = size[1];
@@ -47,7 +60,7 @@ define(function(require, exports, module) {
                     : selectRows(options.itemsPerRow, width);
 
                 var numRows = rows.length;
-                var rowHeight = (height - ((numRows - 1) * gutter)) / numRows;
+                var rowHeight = (height - ((numRows - 1) * gutter_y)) / numRows;
 
                 var sizes = [];
                 var positions = [];
@@ -55,17 +68,17 @@ define(function(require, exports, module) {
                 var y = 0;
                 for (var row = 0; row < numRows; row++){
                     var numCols = rows[row];
-                    var colWidth = (width - ((numCols - 1) * gutter)) / numCols;
+                    var colWidth = (width - ((numCols - 1) * gutter_x)) / numCols;
 
                     var x = 0;
                     for (var col = 0; col < numCols; col++){
                         var size = [colWidth, rowHeight];
                         sizes.push(size);
                         positions.push([x,y]);
-                        x += colWidth + gutter;
+                        x += colWidth + gutter_x;
                     }
 
-                    y += rowHeight + gutter;
+                    y += rowHeight + gutter_y;
                 }
 
                 return {
