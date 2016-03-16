@@ -3,9 +3,10 @@
 
 // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
 
-// MIT license
+// modified by Joe Andrieu to work with RequestJS
 
-(function() {
+// MIT license
+define(function(require, exports, module){
     var lastTime = 0;
     var vendors = ['ms', 'moz', 'webkit', 'o'];
     for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
@@ -28,4 +29,4 @@
         window.cancelAnimationFrame = function(id) {
             clearTimeout(id);
         };
-}());
+});
