@@ -6,6 +6,7 @@ define(function(require, exports, module) {
         Inputs: require('./inputs'),
         Layouts: require('./layouts'),
         Streams: require('./streams'),
-        Transitions: require('./transitions')
+        Transitions: require('./transitions'),
+        Polyfile: require('./polyfill')
     };
 });
