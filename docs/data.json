@@ -404,6 +404,13 @@
                 "Layouts": 1
             }
         },
+        "samsara/polyfill/es5-shim.js": {
+            "name": "samsara/polyfill/es5-shim.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "samsara/streams/Accumulator.js": {
             "name": "samsara/streams/Accumulator.js",
             "modules": {},
@@ -520,7 +527,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "samsara/core/nodes/RenderTreeNode.js",
-            "line": 15,
+            "line": 17,
             "description": "A node in the render tree. As such, it wraps a layout or size node,\n providing them with an `add` method. By adding nodes, the render tree\n is constructed, the leaves of which are `Surfaces`.",
             "is_constructor": 1,
             "access": "private",
@@ -619,7 +626,7 @@
             "extension_for": [],
             "namespace": "Core",
             "file": "samsara/core/ElementOutput.js",
-            "line": 20,
+            "line": 13,
             "description": "Responsible for committing CSS3 properties to the DOM and providing DOM event hooks\n from a provided DOM element. Where Surface's API handles inputs from the developer\n from within Samsara, ElementOutput handles the DOM interaction layer.",
             "is_constructor": 1,
             "uses": [
@@ -886,7 +893,7 @@
             "extension_for": [],
             "namespace": "Core",
             "file": "samsara/core/View.js",
-            "line": 16,
+            "line": 11,
             "description": "A View provides encapsulation for a subtree of the render tree. You can build\n complicated visual components and add them to a render tree as you would a `Surface`.\n\n Custom `Views` are created by calling `extend` on the `View` constructor.\n\n In addition to what a `Controller` provides, a View provides:\n\n     Render Tree method: `.add`\n     Size methods: `setSize`, `setProportions`\n     Layout methods: `setOpacity`, `setOrigin`",
             "example": [
                 "\n\n     var MyView = View.extend({\n         defaults : {\n             defaultOption1 : '',\n             defaultOption2 : 42\n         },\n         initialize : function(options){\n             // this method called on instantiation\n             // options are passed in after being patched by the specified defaults\n\n             var surface = new Surface({\n                 content : options.defaultOption1,\n                 size : [options.defaultOption2,100],\n                 properties : {background : 'red'}\n             });\n\n             this.add(surface);\n         }\n     });\n\n     var myView = new myView({defaultOption1 : 'hello'});\n\n     var context = Context();\n     context.add(myView);\n\n     context.mount(document.body);"
@@ -1023,7 +1030,7 @@
             ],
             "namespace": "DOM",
             "file": "samsara/dom/Context.js",
-            "line": 30,
+            "line": 29,
             "description": "A Context defines a top-level DOM element inside which other nodes (like Surfaces) are rendered.\n\n The CSS class `samsara-context` is applied, which provides the minimal CSS necessary\n to create a performant 3D context (specifically `preserve-3d`).\n\n The Context must be mounted to a DOM node via the `mount` method. If no node is specified\n it is mounted to `document.body`.",
             "example": [
                 "\n\n     var context = Context();\n\n     var surface = new Surface({\n         size : [100,100],\n         properties : {background : 'red'}\n     });\n\n     context.add(surface);\n     context.mount(document.body)"
@@ -1060,7 +1067,7 @@
             "extension_for": [],
             "namespace": "DOM",
             "file": "samsara/dom/Surface.js",
-            "line": 11,
+            "line": 17,
             "description": "Surface is a wrapper for a DOM element animated by Samsara.\n Samsara will commit opacity, size and CSS3 `transform` properties into the Surface.\n CSS classes, properties and DOM attributes can also be added and dynamically changed.\n Surfaces also act as sources for DOM events such as `click`.",
             "example": [
                 "\n\n     var context = new Context()\n\n     var surface = new Surface({\n         content : 'Hello world!',\n         size : [true,100],\n         opacity : .5,\n         classes : ['myClass1', 'myClass2'],\n         properties : {background : 'red'}\n     });\n\n     context.add(surface);\n\n     context.mount(document.body);",
@@ -1715,8 +1722,8 @@
                     "optional": true,
                     "props": [
                         {
-                            "name": "itemsByRow",
-                            "description": "Number of items per row, or an object of {width : itemsByRow} pairs",
+                            "name": "itemsPerRow",
+                            "description": "Number of items per row, or an object of {width : itemsPerRow} pairs",
                             "type": "Array|Object"
                         },
                         {
@@ -2114,7 +2121,7 @@
         },
         {
             "file": "samsara/core/nodes/RenderTreeNode.js",
-            "line": 39,
+            "line": 76,
             "description": "Extends the render tree with a new node. Similar to how a tree data structure\n is created, but instead of a node with an array of children, children subscribe\n to notifications from the parent.\n\n Nodes can be instances of `LayoutNode`, `SizeNode`, or Object literals with\n size and layout properties, in which case, appropriate nodes will be created.\n\n This method also takes `Views` (subtrees) and `Surfaces` (leaves).",
             "itemtype": "method",
             "name": "add",
@@ -2258,7 +2265,23 @@
         },
         {
             "file": "samsara/core/ElementAllocator.js",
-            "line": 32,
+            "line": 31,
+            "description": "Set containing element to insert allocated content into",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "container",
+                    "description": "DOM element",
+                    "type": "Node"
+                }
+            ],
+            "class": "Core.ElementAllocator",
+            "namespace": "Core"
+        },
+        {
+            "file": "samsara/core/ElementAllocator.js",
+            "line": 42,
             "description": "Move the DOM elements from their original container to a new one.",
             "itemtype": "method",
             "name": "migrate",
@@ -2274,7 +2297,7 @@
         },
         {
             "file": "samsara/core/ElementAllocator.js",
-            "line": 51,
+            "line": 61,
             "description": "Allocate an element of specified type from the pool.",
             "itemtype": "method",
             "name": "allocate",
@@ -2294,7 +2317,7 @@
         },
         {
             "file": "samsara/core/ElementAllocator.js",
-            "line": 71,
+            "line": 81,
             "description": "De-allocate an element of specified type to the pool for recycling.",
             "itemtype": "method",
             "name": "deallocate",
@@ -2306,99 +2329,6 @@
                 }
             ],
             "class": "Core.ElementAllocator",
-            "namespace": "Core"
-        },
-        {
-            "file": "samsara/core/ElementOutput.js",
-            "line": 179,
-            "description": "Adds a handler to the `type` channel which will be executed on `emit`.",
-            "itemtype": "method",
-            "name": "on",
-            "params": [
-                {
-                    "name": "type",
-                    "description": "DOM event channel name, e.g., \"click\", \"touchmove\"",
-                    "type": "String"
-                },
-                {
-                    "name": "handler",
-                    "description": "Handler. It's only argument will be an emitted data payload.",
-                    "type": "Function"
-                }
-            ],
-            "class": "Core.ElementOutput",
-            "namespace": "Core"
-        },
-        {
-            "file": "samsara/core/ElementOutput.js",
-            "line": 193,
-            "description": "Removes a previously added handler to the `type` channel.\n Undoes the work of `on`.",
-            "itemtype": "method",
-            "name": "removeListener",
-            "params": [
-                {
-                    "name": "type",
-                    "description": "DOM event channel name e.g., \"click\", \"touchmove\"",
-                    "type": "String"
-                },
-                {
-                    "name": "handler",
-                    "description": "Handler",
-                    "type": "Function"
-                }
-            ],
-            "class": "Core.ElementOutput",
-            "namespace": "Core"
-        },
-        {
-            "file": "samsara/core/ElementOutput.js",
-            "line": 205,
-            "description": "Emit an event with optional data payload. This will execute all listening\n to the channel name with the payload as only argument.",
-            "itemtype": "method",
-            "name": "emit",
-            "params": [
-                {
-                    "name": "type",
-                    "description": "Event channel name",
-                    "type": "String"
-                },
-                {
-                    "name": "payload",
-                    "description": "User defined data payload",
-                    "type": "Object",
-                    "optional": true
-                }
-            ],
-            "class": "Core.ElementOutput",
-            "namespace": "Core"
-        },
-        {
-            "file": "samsara/core/ElementOutput.js",
-            "line": 217,
-            "description": "Assigns the DOM element for committing and to and attaches event listeners.",
-            "access": "private",
-            "tagname": "",
-            "itemtype": "method",
-            "name": "attach",
-            "params": [
-                {
-                    "name": "target",
-                    "description": "document parent of this container",
-                    "type": "Node"
-                }
-            ],
-            "class": "Core.ElementOutput",
-            "namespace": "Core"
-        },
-        {
-            "file": "samsara/core/ElementOutput.js",
-            "line": 229,
-            "description": "Removes the associated DOM element in memory and detached event listeners.",
-            "access": "private",
-            "tagname": "",
-            "itemtype": "method",
-            "name": "detach",
-            "class": "Core.ElementOutput",
             "namespace": "Core"
         },
         {
@@ -3724,7 +3654,7 @@
         },
         {
             "file": "samsara/core/View.js",
-            "line": 115,
+            "line": 87,
             "description": "Extends the render tree subtree with a new node.",
             "itemtype": "method",
             "name": "add",
@@ -3744,7 +3674,7 @@
         },
         {
             "file": "samsara/core/View.js",
-            "line": 125,
+            "line": 101,
             "description": "Getter for size.",
             "itemtype": "method",
             "name": "getSize",
@@ -3757,7 +3687,7 @@
         },
         {
             "file": "samsara/core/View.js",
-            "line": 134,
+            "line": 110,
             "description": "Setter for size.",
             "itemtype": "method",
             "name": "setSize",
@@ -3773,7 +3703,7 @@
         },
         {
             "file": "samsara/core/View.js",
-            "line": 143,
+            "line": 120,
             "description": "Setter for proportions.",
             "itemtype": "method",
             "name": "setProportions",
@@ -3789,13 +3719,13 @@
         },
         {
             "file": "samsara/core/View.js",
-            "line": 152,
+            "line": 129,
             "description": "Setter for proportions.",
             "itemtype": "method",
             "name": "setProportions",
             "params": [
                 {
-                    "name": "proportions",
+                    "name": "aspectRatio",
                     "description": "Proportions as [x,y], or a stream.",
                     "type": "Number[]|Stream"
                 }
@@ -3805,7 +3735,7 @@
         },
         {
             "file": "samsara/core/View.js",
-            "line": 161,
+            "line": 138,
             "description": "Setter for origin.",
             "itemtype": "method",
             "name": "setOrigin",
@@ -3821,7 +3751,7 @@
         },
         {
             "file": "samsara/core/View.js",
-            "line": 170,
+            "line": 147,
             "description": "Setter for opacity.",
             "itemtype": "method",
             "name": "setOpacity",
@@ -3837,7 +3767,7 @@
         },
         {
             "file": "samsara/dom/ContainerSurface.js",
-            "line": 65,
+            "line": 70,
             "description": "Get current perspective in pixels.",
             "itemtype": "method",
             "name": "getPerspective",
@@ -3850,7 +3780,7 @@
         },
         {
             "file": "samsara/dom/ContainerSurface.js",
-            "line": 75,
+            "line": 80,
             "description": "Set current perspective in pixels.",
             "itemtype": "method",
             "name": "setPerspective",
@@ -3878,7 +3808,7 @@
         },
         {
             "file": "samsara/dom/ContainerSurface.js",
-            "line": 87,
+            "line": 92,
             "description": "Extends the render tree with a provided node.",
             "itemtype": "method",
             "name": "add",
@@ -3898,7 +3828,7 @@
         },
         {
             "file": "samsara/dom/Context.js",
-            "line": 119,
+            "line": 115,
             "description": "Extends the render tree beginning with the Context's RootNode with a new node.\n Delegates to RootNode's `add` method.",
             "itemtype": "method",
             "name": "add",
@@ -3918,7 +3848,7 @@
         },
         {
             "file": "samsara/dom/Context.js",
-            "line": 132,
+            "line": 140,
             "description": "Get current perspective of this Context in pixels.",
             "itemtype": "method",
             "name": "getPerspective",
@@ -3931,7 +3861,7 @@
         },
         {
             "file": "samsara/dom/Context.js",
-            "line": 142,
+            "line": 150,
             "description": "Set current perspective of the `context` in pixels.",
             "itemtype": "method",
             "name": "setPerspective",
@@ -3959,7 +3889,7 @@
         },
         {
             "file": "samsara/dom/Context.js",
-            "line": 154,
+            "line": 162,
             "description": "Set current perspective of the `context` in pixels.",
             "itemtype": "method",
             "name": "setPerspective",
@@ -3987,7 +3917,7 @@
         },
         {
             "file": "samsara/dom/Context.js",
-            "line": 166,
+            "line": 174,
             "description": "Allocate contents of the `context` to a DOM node.",
             "itemtype": "method",
             "name": "mount",
@@ -4003,7 +3933,7 @@
         },
         {
             "file": "samsara/dom/Context.js",
-            "line": 201,
+            "line": 211,
             "description": "Adds a handler to the `type` channel which will be executed on `emit`.\n These events should be DOM events that occur on the DOM node the\n context has been mounted to.",
             "itemtype": "method",
             "name": "on",
@@ -4024,7 +3954,7 @@
         },
         {
             "file": "samsara/dom/Context.js",
-            "line": 221,
+            "line": 231,
             "description": "Removes the `handler` from the `type`.\n Undoes the work of `on`.",
             "itemtype": "method",
             "name": "on",
@@ -4045,7 +3975,7 @@
         },
         {
             "file": "samsara/dom/Context.js",
-            "line": 233,
+            "line": 243,
             "description": "Used internally when context is subscribed to.",
             "itemtype": "method",
             "name": "emit",
@@ -4068,7 +3998,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 181,
+            "line": 157,
             "description": "Setter for HTML attributes.",
             "itemtype": "method",
             "name": "setAttributes",
@@ -4085,7 +4015,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 198,
+            "line": 178,
             "description": "Getter for HTML attributes.",
             "itemtype": "method",
             "name": "getAttributes",
@@ -4098,7 +4028,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 208,
+            "line": 188,
             "description": "Setter for CSS properties.\n Note: properties are camelCased, not hyphenated.",
             "itemtype": "method",
             "name": "setProperties",
@@ -4115,7 +4045,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 224,
+            "line": 208,
             "description": "Getter for CSS properties.",
             "itemtype": "method",
             "name": "getProperties",
@@ -4128,7 +4058,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 234,
+            "line": 218,
             "description": "Add CSS class to the list of classes on this Surface.",
             "itemtype": "method",
             "name": "addClass",
@@ -4145,7 +4075,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 250,
+            "line": 237,
             "description": "Remove CSS class from the list of classes on this Surface.",
             "itemtype": "method",
             "name": "removeClass",
@@ -4161,7 +4091,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 265,
+            "line": 253,
             "description": "Toggle CSS class for this Surface.",
             "itemtype": "method",
             "name": "toggleClass",
@@ -4177,7 +4107,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 278,
+            "line": 266,
             "description": "Reset classlist.",
             "itemtype": "method",
             "name": "setClasses",
@@ -4194,7 +4124,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 297,
+            "line": 280,
             "description": "Get array of CSS classes attached to this Surface.",
             "itemtype": "method",
             "name": "getClasslist",
@@ -4207,7 +4137,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 307,
+            "line": 290,
             "description": "Set or overwrite innerHTML content of this Surface.",
             "itemtype": "method",
             "name": "setContent",
@@ -4224,7 +4154,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 323,
+            "line": 308,
             "description": "Return innerHTML content of this Surface.",
             "itemtype": "method",
             "name": "getContent",
@@ -4237,7 +4167,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 333,
+            "line": 318,
             "description": "Set options for this surface",
             "itemtype": "method",
             "name": "setOptions",
@@ -4253,7 +4183,49 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 355,
+            "line": 340,
+            "description": "Adds a handler to the `type` channel which will be executed on `emit`.",
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "DOM event channel name, e.g., \"click\", \"touchmove\"",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "Handler. It's only argument will be an emitted data payload.",
+                    "type": "Function"
+                }
+            ],
+            "class": "DOM.Surface",
+            "namespace": "DOM"
+        },
+        {
+            "file": "samsara/dom/Surface.js",
+            "line": 354,
+            "description": "Removes a previously added handler to the `type` channel.\n Undoes the work of `on`.",
+            "itemtype": "method",
+            "name": "off",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "DOM event channel name e.g., \"click\", \"touchmove\"",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "Handler",
+                    "type": "Function"
+                }
+            ],
+            "class": "DOM.Surface",
+            "namespace": "DOM"
+        },
+        {
+            "file": "samsara/dom/Surface.js",
+            "line": 368,
             "description": "Allocates the element-type associated with the Surface, adds its given\n element classes, and prepares it for future committing.\n\n This method is called upon the first `start` or `resize`\n event the Surface gets.",
             "access": "private",
             "tagname": "",
@@ -4271,25 +4243,18 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 389,
+            "line": 405,
             "description": "Remove all Samsara-relevant data from the Surface.",
             "access": "private",
             "tagname": "",
             "itemtype": "method",
             "name": "remove",
-            "params": [
-                {
-                    "name": "allocator",
-                    "description": "Allocator",
-                    "type": "ElementAllocator"
-                }
-            ],
             "class": "DOM.Surface",
             "namespace": "DOM"
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 434,
+            "line": 431,
             "description": "Insert the Surface's content into the currentTarget.",
             "access": "private",
             "tagname": "",
@@ -4307,7 +4272,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 455,
+            "line": 444,
             "description": "Cache the content of the Surface in a document fragment for future deployment.",
             "access": "private",
             "tagname": "",
@@ -4325,7 +4290,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 469,
+            "line": 456,
             "description": "Getter for size.",
             "itemtype": "method",
             "name": "getSize",
@@ -4338,7 +4303,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 480,
+            "line": 467,
             "description": "Setter for size.",
             "itemtype": "method",
             "name": "setSize",
@@ -4354,7 +4319,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 492,
+            "line": 478,
             "description": "Setter for proportions.",
             "itemtype": "method",
             "name": "setProportions",
@@ -4370,7 +4335,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 503,
+            "line": 488,
             "description": "Setter for margins.",
             "itemtype": "method",
             "name": "setMargins",
@@ -4386,7 +4351,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 514,
+            "line": 498,
             "description": "Setter for aspect ratio. If only one of width or height is specified,\n the aspect ratio will replace the unspecified dimension by scaling\n the specified dimension by the value provided.",
             "itemtype": "method",
             "name": "setAspectRatio",
@@ -4402,7 +4367,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 527,
+            "line": 510,
             "description": "Setter for origin.",
             "itemtype": "method",
             "name": "setOrigin",
@@ -4418,7 +4383,7 @@
         },
         {
             "file": "samsara/dom/Surface.js",
-            "line": 539,
+            "line": 521,
             "description": "Setter for opacity.",
             "itemtype": "method",
             "name": "setOpacity",
@@ -4693,14 +4658,15 @@
         {
             "file": "samsara/events/EventHandler.js",
             "line": 134,
-            "description": "Stop listening to events from an upstream source.\n Undoes work of `subscribe`.",
+            "description": "Stop listening to events from an upstream source.\n Undoes work of `subscribe`.\n\n If no source is provided, all subscribed sources are unsubscribed from.",
             "itemtype": "method",
             "name": "unsubscribe",
             "params": [
                 {
                     "name": "source",
                     "description": "Event source",
-                    "type": "EventEmitter"
+                    "type": "EventEmitter",
+                    "optional": true
                 }
             ],
             "class": "Events.EventHandler",
@@ -5266,6 +5232,13 @@
                 }
             ],
             "class": "Layouts.SequentialLayout",
+            "namespace": "Layouts"
+        },
+        {
+            "file": "samsara/polyfill/es5-shim.js",
+            "line": 32,
+            "description": "Brings an environment as close to ECMAScript 5 compliance\nas is possible with the facilities of erstwhile engines.\n\nAnnotated ES5: http://es5.github.com/ (specific links below)\nES5 Spec: http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf\nRequired reading: http://javascriptweblog.wordpress.com/2011/12/05/extending-javascript-natives/",
+            "class": "Streams.Accumulator",
             "namespace": "Layouts"
         },
         {
@@ -5966,6 +5939,10 @@
         {
             "message": "Missing item type\nThis queue is executed before the postTickQueue and after the preTickQueue.\n however, it differs in that the Engine does not clear the queue.\n This must be done manually.",
             "line": " samsara/core/queues/tickQueue.js:4"
+        },
+        {
+            "message": "Missing item type\nBrings an environment as close to ECMAScript 5 compliance\nas is possible with the facilities of erstwhile engines.\n\nAnnotated ES5: http://es5.github.com/ (specific links below)\nES5 Spec: http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf\nRequired reading: http://javascriptweblog.wordpress.com/2011/12/05/extending-javascript-natives/",
+            "line": " samsara/polyfill/es5-shim.js:32"
         }
     ]
 }

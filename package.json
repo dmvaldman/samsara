@@ -8,8 +8,9 @@
   "scripts": {
     "test": "node_modules/.bin/intern-client config=tests/intern reporters=Pretty",
     "docs": "yuidoc ./samsara -t ./node_modules/yuidoc-bootstrap-theme -H ./node_modules/yuidoc-bootstrap-theme/helpers/helpers.js -o ./docs",
-    "docs-examples": "npm run docs-example-logo && npm run docs-example-sidemenu",
+    "docs-examples": "npm run docs-example-logo && npm run docs-example-sidemenu && npm run docs-example-polyfilllogo",
     "docs-example-logo": "docco -l parallel examples/Logo/js/main.js examples/Logo/js/app/*.js -o examples/Logo/docs",
+    "docs-example-polyfilllogo": "docco -l parallel examples/PolyfillLogo/js/main.js examples/PolyfillLogo/js/app/*.js -o examples/PolyfillLogo/docs",
     "docs-example-sidemenu": "docco -l parallel examples/SideMenu/js/main.js examples/SideMenu/js/app/*.js -o examples/SideMenu/docs",
     "build": "npm run build-bundle && npm run build-min",
     "build-bundle": "webpack --entry ./samsara/index.js --output-filename samsara.js --output-path ./dist --output-library Samsara --output-library-target umd",
