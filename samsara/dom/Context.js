@@ -12,12 +12,6 @@ define(function(require, exports, module) {
     var preTickQueue = require('../core/queues/preTickQueue');
     var dirtyQueue = require('../core/queues/dirtyQueue');
 
-    var rafStarted = false;
-    var isMobile = /mobi/i.test(window.navigator.userAgent);
-    var orientation = Number.NaN;
-    var windowWidth = Number.NaN;
-    var windowHeight = Number.NaN;
-
     var layoutSpec = {
         transform : Transform.identity,
         opacity : 1,
@@ -72,22 +66,18 @@ define(function(require, exports, module) {
         this._perspectiveOrigin = new Transitionable();
 
         this._perspective.on('update', function(perspective){
-            if (!this.container) return;
             setPerspective(this.container, perspective);
         }.bind(this));
 
         this._perspective.on('end', function(perspective){
-            if (!this.container) return;
             setPerspective(this.container, perspective);
         }.bind(this));
 
         this._perspectiveOrigin.on('update', function(origin) {
-            if (!this.container) return;
             setPerspectiveOrigin(this.container, origin);
         }.bind(this));
 
         this._perspectiveOrigin.on('end', function(origin) {
-            if (!this.container) return;
             setPerspectiveOrigin(this.container, origin);
         }.bind(this));
 
@@ -132,13 +122,12 @@ define(function(require, exports, module) {
         }
         else this.container.classList.remove(this.elementClass);
 
-        windowWidth = Number.NaN;
-        windowHeight = Number.NaN;
-
         this._node.remove();
 
         while (this.container.hasChildNodes())
             this.container.removeChild(this.container.firstChild);
+
+        Engine.deregisterContext(this);
     };
 
     /**
@@ -160,7 +149,13 @@ define(function(require, exports, module) {
      * @param [callback] {Function} Callback executed on completion of transition
      */
     Context.prototype.setPerspective = function setPerspective(perspective, transition, callback) {
-        this._perspective.set(perspective, transition, callback);
+        if (this.container)
+            this._perspective.set(perspective, transition, callback);
+        else {
+            this.on('deploy', function(){
+                this._perspective.set(perspective, transition, callback);
+            }.bind(this));
+        }
     };
 
     /**
@@ -172,7 +167,13 @@ define(function(require, exports, module) {
      * @param [callback] {Function} Callback executed on completion of transition
      */
     Context.prototype.setPerspectiveOrigin = function setPerspectiveOrigin(origin, transition, callback) {
-        this._perspectiveOrigin.set(origin, transition, callback);
+        if (this.container)
+            this._perspectiveOrigin.set(origin, transition, callback);
+        else {
+            this.on('deploy', function() {
+                this._perspectiveOrigin.set(origin, transition, callback);
+            }.bind(this));
+        }
     };
 
     /**
@@ -181,7 +182,7 @@ define(function(require, exports, module) {
      * @method mount
      * @param node {Node}  DOM element
      */
-    Context.prototype.mount = function mount(node, resizeListenFlag){
+    Context.prototype.mount = function mount(node){
         node = node || window.document.body;
 
         this.container = node;
@@ -200,21 +201,14 @@ define(function(require, exports, module) {
 
         this.emit('deploy', this.container);
 
-        if (!resizeListenFlag)
-            window.addEventListener('resize', handleResize.bind(this), false);
-
         preTickQueue.push(function (){
-            if (!resizeListenFlag) handleResize.call(this);
             this._layout.trigger('start', layoutSpec);
             dirtyQueue.push(function(){
                 this._layout.trigger('end', layoutSpec);
             }.bind(this));
         }.bind(this));
 
-        if (!rafStarted) {
-            rafStarted = true;
-            Engine.start();
-        }
+        Engine.registerContext(this);
     };
 
     /**
@@ -282,27 +276,6 @@ define(function(require, exports, module) {
         : function setPerspectiveOrigin(element, origin) {
             element.style.perspectiveOrigin = origin ? _formatCSSOrigin(origin) : '50% 50%';
         };
-
-    function handleResize() {
-        var newHeight = window.innerHeight;
-        var newWidth = window.innerWidth;
-
-        if (isMobile){
-            var newOrientation = newHeight > newWidth;
-            if (orientation === newOrientation) return false;
-            orientation = newOrientation;
-        }
-        else {
-            if (newWidth === windowWidth && newHeight === windowHeight) return false;
-            windowWidth = newWidth;
-            windowHeight = newHeight;
-        }
-
-        this._size.emit('resize');
-        dirtyQueue.push(function(){
-            this._size.emit('resize');
-        }.bind(this));
-    }
 
     module.exports = Context;
 });
