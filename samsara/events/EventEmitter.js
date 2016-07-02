@@ -109,7 +109,7 @@ define(function(require, exports, module) {
                 if (index >= 0) listener.splice(index, 1);
             }
         }
-        return this.listeners[type].length > 0;
+        return this.listeners[type].length === 0;
     };
 
     /**
