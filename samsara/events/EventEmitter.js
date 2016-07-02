@@ -79,9 +79,9 @@ define(function(require, exports, module) {
      */
     EventEmitter.prototype.once = function once(type, handler){
         var onceHandler = function(){
-            EventEmitter.prototype.off.call(this, type, onceHandler);
-            handler.apply(this, arguments);
-        }.bind(this);
+            EventEmitter.prototype.off.call(this._owner, type, onceHandler);
+            handler.apply(this._owner, arguments);
+        }.bind(this._owner);
         this.on(type, onceHandler);
     };
 
