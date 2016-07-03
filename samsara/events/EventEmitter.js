@@ -81,7 +81,7 @@ define(function(require, exports, module) {
         var onceHandler = function(){
             EventEmitter.prototype.off.call(this._owner, type, onceHandler);
             handler.apply(this._owner, arguments);
-        }.bind(this._owner);
+        }.bind(this);
         this.on(type, onceHandler);
     };
 
