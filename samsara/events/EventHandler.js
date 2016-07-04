@@ -128,7 +128,7 @@ define(function(require, exports, module) {
         if (empty && this.upstreamListeners[type]) {
             var oldUpstreamListener = this.upstreamListeners[type];
             delete this.upstreamListeners[type];
-            for (var i = 0; this.upstream.length; i++) {
+            for (var i = 0; i < this.upstream.length; i++) {
                 this.upstream[i].off(type, oldUpstreamListener);
             }
         }
