@@ -4,6 +4,7 @@ define(function(require, exports, module) {
     var EventHandler = require('../events/EventHandler');
     var OptionsManager = require('../core/_OptionsManager');
     var SimpleStream = require('../streams/SimpleStream');
+    var dirtyQueue = require('../core/queues/dirtyQueue');
 
     var MINIMUM_TICK_TIME = 8;
     var _now = Date.now;
@@ -231,7 +232,10 @@ define(function(require, exports, module) {
         if (!this._down) return false;
 
         this._payload.event = event;
-        this._eventOutput.emit('end', this._payload);
+
+        dirtyQueue.push(function(){
+            this._eventOutput.emit('end', this._payload);
+        }.bind(this));
 
         this._prevCoord = undefined;
         this._prevTime = undefined;
