@@ -81,6 +81,7 @@ define(function (require, exports, module) {
             this.value = value;
             this._currentActive = false;
 
+            // fire callback before `end` event to ensure overriding of `end` event if new `set` is called
             if (this._callback) {
                 var callback = this._callback;
                 this._callback = undefined;
@@ -102,12 +103,8 @@ define(function (require, exports, module) {
         if (value !== undefined) {
             this.value = value;
             preTickQueue.push(function () {
-                this.trigger('start', value);
-
-                dirtyQueue.push(function () {
-                    if (hasUpdated) return;
-                    this.trigger('end', value);
-                }.bind(this));
+                if (this._method) return;
+                this.emit('set', value);
             }.bind(this));
         }
     }
@@ -155,13 +152,9 @@ define(function (require, exports, module) {
     Transitionable.prototype.set = function set(value, transition, callback) {
         if (!transition || transition.duration === 0) {
             this.value = value;
-            if (callback) dirtyQueue.push(callback);
+            if (callback) callback();
             if (!this.isActive()){
-                this.trigger('start', value);
-
-                dirtyQueue.push(function () {
-                    this.trigger('end', value);
-                }.bind(this));
+                this.emit('set', value);
             }
             return;
         }

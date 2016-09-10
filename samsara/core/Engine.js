@@ -88,7 +88,7 @@ define(function(require, exports, module) {
     };
 
     function firstStart(){
-        handleResize();
+        handleResize(true);
         handleLayout();
         if (isNaN(rafId)) Engine.start();
     }
@@ -129,7 +129,7 @@ define(function(require, exports, module) {
     }, resizeDebounceTime);
 
     // Emit a resize event if the window's height or width has changed
-    function handleResize() {
+    function handleResize(firstStart) {
         var newHeight = window.innerHeight;
         var newWidth = window.innerWidth;
 
@@ -144,10 +144,7 @@ define(function(require, exports, module) {
 
             // Landscape/Portrait resize events are discrete on mobile
             // so don't fire updates
-            Engine.size.emit('start');
-            dirtyQueue.push(function(){
-                Engine.size.emit('end', 'end');
-            });
+            Engine.size.emit('set');
         }
         else {
             if (newWidth === windowWidth && newHeight === windowHeight)
@@ -157,13 +154,19 @@ define(function(require, exports, module) {
             windowHeight = newHeight;
 
             if (!isResizing){
-                Engine.size.emit('start');
-                isResizing = true;
-                resizeEnd();
+                if (firstStart){
+                    Engine.size.emit('set');
+                }
+                else {
+                    isResizing = true;
+                    Engine.size.emit('start');
+                    resizeEnd();
+                }
             }
             else {
                 postTickQueue.push(function(){
                     Engine.size.emit('update');
+                    // debounced resize`
                     resizeEnd();
                 });
             }
@@ -179,10 +182,7 @@ define(function(require, exports, module) {
     };
 
     function handleLayout(){
-        Engine.layout.trigger('start', layoutSpec);
-        dirtyQueue.push(function(){
-            Engine.layout.trigger('end', layoutSpec);
-        });
+        Engine.layout.trigger('set', layoutSpec);
     }
 
     module.exports = Engine;
