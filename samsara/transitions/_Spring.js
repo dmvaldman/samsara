@@ -3,7 +3,6 @@
 define(function (require, exports, module) {
     var EventHandler = require('../events/EventHandler');
     var SimpleStream = require('../streams/SimpleStream');
-    var dirtyQueue = require('../core/queues/dirtyQueue');
 
     var now = Date.now;
     var eps = 1e-6; // for calculating velocity using finite difference
@@ -150,19 +149,13 @@ define(function (require, exports, module) {
 
         var energy = this.energy(this.target, value, this.velocity);
 
-        if (energy >= this.energyTolerance) {
-            this.value = value;
-            this.emit('update', value);
-        }
-        else {
-            this.emit('update', this.target);
+        this.value = value;
+        this.emit('update', value);
 
-            dirtyQueue.push(function(){
-                this.reset(this.target);
-                this._active = false;
-                this.emit('end', this.target);
-            }.bind(this));
-
+        if (energy < this.energyTolerance) {
+            this.reset(this.target);
+            this._active = false;
+            this.emit('end', this.target);
         }
     };
 

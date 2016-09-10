@@ -3,7 +3,6 @@
 define(function (require, exports, module) {
     var EventHandler = require('../events/EventHandler');
     var SimpleStream = require('../streams/SimpleStream');
-    var dirtyQueue = require('../core/queues/dirtyQueue');
 
     var now = Date.now;
     var tolerance = 1e-4; // energy minimum
@@ -137,17 +136,12 @@ define(function (require, exports, module) {
 
         var energy = 0.5 * this.velocity * this.velocity;
 
-        if (energy >= tolerance) {
-            this.emit('update', this.value);
-        }
-        else {
-            this.emit('update', this.value);
+        this.emit('update', this.value);
 
-            dirtyQueue.push(function(){
-                this.reset(this.value);
-                this._active = false;
-                this.emit('end', this.value);
-            }.bind(this));
+        if (energy < tolerance) {
+            this.reset(this.value);
+            this._active = false;
+            this.emit('end', this.value);
         }
     };
 
