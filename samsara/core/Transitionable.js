@@ -1,7 +1,6 @@
 /* Copyright © 2015-2016 David Valdman */
 
 define(function (require, exports, module) {
-    var dirtyQueue = require('./queues/dirtyQueue');
     var preTickQueue = require('./queues/preTickQueue');
     var tickQueue = require('./queues/tickQueue');
     var EventHandler = require('../events/EventHandler');
