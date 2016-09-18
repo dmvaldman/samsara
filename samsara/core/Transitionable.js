@@ -52,8 +52,6 @@ define(function (require, exports, module) {
         this._method = null;
         this._active = false;
         this._currentActive = false;
-
-        var hasUpdated = false;
         this.updateMethod = undefined;
 
         this._eventInput = new EventHandler();
@@ -70,7 +68,6 @@ define(function (require, exports, module) {
         }.bind(this));
 
         this._eventInput.on('update', function (value) {
-            hasUpdated = true;
             this.value = value;
             this.velocity = this._engineInstance.getVelocity();
             this.emit('update', value);
@@ -89,7 +86,6 @@ define(function (require, exports, module) {
 
             if (!this._currentActive){
                 this._active = false;
-                hasUpdated = false;
 
                 if (this._engineInstance)
                     this.velocity = this._engineInstance.getVelocity();
