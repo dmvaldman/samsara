@@ -154,7 +154,6 @@ define(function(require, exports, module) {
         payload.velocity = velocity;
         payload.event = event;
 
-        console.log('mouse start')
         this._eventOutput.emit('start', payload);
     }
 
@@ -242,7 +241,7 @@ define(function(require, exports, module) {
     }
 
     function handleEnter(event){
-        if (!this._down || !this._move) return;
+        if (!this._down) return;
 
         this._eventInput.off('mousemove', handleMove.bind(this));
         this._eventInput.off('mouseup', handleEnd.bind(this));
@@ -252,7 +251,7 @@ define(function(require, exports, module) {
     }
 
     function handleLeave(event) {
-        if (!this._down || !this._move) return;
+        if (!this._down) return;
 
         this.boundMove = handleMove.bind(this);
         this.boundUp = function(event) {
