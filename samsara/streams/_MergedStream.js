@@ -2,12 +2,11 @@
 
 define(function(require, exports, module) {
     var SimpleStream = require('./SimpleStream');
+    var Stream = require('./Stream');
 
     function MergedStream(streams) {
         this.mergedData = streams instanceof Array ? [] : {};
         this.streamCache = {};
-
-        var Stream = require('./Stream');
 
         Stream.call(this, {
             start : function() {
