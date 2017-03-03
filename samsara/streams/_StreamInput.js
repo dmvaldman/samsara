@@ -16,9 +16,9 @@ define(function(require, exports, module) {
         var success = EventHandler.prototype.subscribe.apply(this, arguments);
         if (success) {
             if (source.isActive && source.isActive()) {
-                preTickQueue.push(function(){
-                    this.trigger('start', source.get());
-                }.bind(this));
+                // preTickQueue.push(function(){
+                    this.trigger('start', {_type : 'subscribe', value : source.get()});
+                // }.bind(this));
             }
             return source;
         }
@@ -38,9 +38,9 @@ define(function(require, exports, module) {
         var success = EventHandler.prototype.unsubscribe.apply(this, arguments);
         if (success) {
             if (source.isActive && source.isActive()) {
-                preTickQueue.push(function(){
-                    this.trigger('end', source.get());
-                }.bind(this));
+                // preTickQueue.push(function(){
+                    this.trigger('end', {_type : 'unsubscribe', value : source.get()});
+                // }.bind(this));
             }
             return source;
         }

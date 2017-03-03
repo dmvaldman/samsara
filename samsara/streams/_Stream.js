@@ -2,9 +2,9 @@
 
 define(function(require, exports, module){
     var tick = require('../core/tick');
-    var StreamInput = require('../streams/_StreamInput');
-    var SimpleStream = require('../streams/SimpleStream');
-    var StreamOutput = require('../streams/_StreamContract');
+    var StreamInput = require('./_StreamInput');
+    var StreamOutput = require('./_StreamOutput');
+    var SimpleStream = require('./SimpleStream');
 
     var EVENTS = {
         START : 'start',
@@ -69,6 +69,13 @@ define(function(require, exports, module){
         this._output = new StreamOutput();
         this._numSources = 0;
 
+        this.locked = false;
+        this.lockedCounter = 0;
+
+        this._sources = [];
+        this._sourceData = [];
+        this._subscribeData = [];
+
         this.id = counter++;
 
         createComplexStrategy.call(this, triggers);
@@ -80,9 +87,7 @@ define(function(require, exports, module){
     }
 
     function createComplexStrategy(triggers){
-        var startCounter = 0;
-        this.locked = false;
-        this.lockedCounter = 0;
+        startCounter = 0;
         var self = this;
         var timesFired = 0;
 
@@ -104,81 +109,59 @@ define(function(require, exports, module){
             timesFired++;
 
             if (timesFired > 1) {
-                // console.log('fired twice', this.id)
-                //debugger
-                // return false;
+                console.log('fired twice', this.id)
             }
-
-            // console.log(data);
-
-            hasReceivedEvent = false;
-            hasResolved = true;
 
             if (hasSentLock){
                 this.emit('unlock', this);
                 hasSentLock = false;
             }
 
-            if (startCounter === 0 && states.update && states.end && !states.start){
-                // console.log('potential second update?')
-                // update and end called in the same tick when tick should end
-                this._output.emit(EVENTS.UPDATE, data);
-                states.prev = EVENTS.UPDATE;
-                states.update = false;
-            }
-            else if (states.prev !== EVENTS.UPDATE && states.start && states.update && !states.end){
-                // console.log('potential second start?', states.prev)
-                // start and update called in the same tick when tick should start
-                this._output.emit(EVENTS.START, data);
-                states.prev = EVENTS.START;
-                states.start = false;
+            var type = collapse(this._sourceData, startCounter);
+
+            if (startCounter > 0){
+                // subscribe executed
+                if (type === EVENTS.END){
+                    type === EVENTS.UPDATE;
+                }
+                else {
+                    if (type !== EVENTS.START)
+                        this._output.emit(EVENTS.START, data);
+                }
+                startCounter = 0;
             }
 
-            if (states.update || (states.start && states.end)){
-                // call update if updating or if both starting and stopping
-                this._output.emit(EVENTS.UPDATE, data);
-                states.prev = EVENTS.UPDATE;
-            }
-            else if (states.prev !== EVENTS.UPDATE && states.prev !== EVENTS.START && states.start && !states.end){
-                if (states.prev === EVENTS.START) console.log('crap start');
-                if (states.prev === EVENTS.UPDATE ) console.log('crap start 2')
-                // call start if all have started
-                this._output.emit(EVENTS.START, data);
-                states.prev = EVENTS.START;
-            }
-            else if (states.prev !== EVENTS.START && startCounter === 0 && states.end && !states.start){
-                if (states.prev === EVENTS.END) console.log('crap end');
-                if (states.prev === EVENTS.START ) console.log('crap end 2')
-                // call end if all have ended
-                this._output.emit(EVENTS.END, data);
-                states.prev = EVENTS.END;
-            }
-            else if (startCounter === 0 && states.set){
-                this._output.emit(EVENTS.SET, data);
-                states.prev = EVENTS.SET;
-            }
-            else if (states.set && states.prev === EVENTS.UPDATE){
-                this._output.emit(EVENTS.UPDATE, data);
-                states.prev = EVENTS.UPDATE;
+            if (type) this._output.emit(type, data);
+
+            // console.log(type, data)
+
+            if (startCounter < 0){
+                // unsubscribe executed
+                if (type === EVENTS.START){
+                    type === EVENTS.UPDATE;
+                }
+                else {
+                    if (type !== EVENTS.END)
+                        this._output.emit(EVENTS.END, data);
+                }
+                startCounter = 0;
             }
 
-            // reset
-            states.start = false;
-            states.update = false;
-            states.end = false;
-            states.set = false;
+            hasReceivedEvent = false;
+            hasResolved = true;
         }.bind(this);
 
         this._input.on(EVENTS.SET, function(data){
             if (triggers.set) data = triggers.set(data);
-            states.set = true;
             delay(data);
         });
 
         this._input.on(EVENTS.START, function(data){
+            if (data && data._type){
+                startCounter++;
+                data = data.value;
+            }
             if (triggers.start) data = triggers.start(data);
-            states.start = true;
-            startCounter++;
             delay(data);
         });
 
@@ -189,11 +172,11 @@ define(function(require, exports, module){
         });
 
         this._input.on(EVENTS.END, function(data){
-            if (triggers.end) data = triggers.end(data);
-            startCounter--;
-            if (startCounter < 0) {
-                console.log('start counter', startCounter)
+            if (data && data._type){
+                startCounter--;
+                data = data.value;
             }
+            if (triggers.end) data = triggers.end(data);
             states.end = true;
             delay(data);
         });
@@ -231,26 +214,18 @@ define(function(require, exports, module){
                 self.lockedCounter--;
                 if (self.lockedCounter === 0){
                     self.locked = false;
-                    self._output.emit('unlock', self)
+                    self._output.emit('unlock', self);
                 }
             }
         }
 
         var delay = function delay(data){
-            hasReceivedEvent = true;
-
             if (data === false) return;
-
+            hasReceivedEvent = true;
             cache = data;
 
-            if (!hasSentLock){
-                this._output.emit('lock', this);
-                hasSentLock = true;
-            }
-
-            // console.log(data)
-            if (!this.locked && hasTicked){
-                resolve.call(this, data);
+            if (hasTicked && !this.locked){
+                resolve.call(this, cache);
             }
         }.bind(this);
 
@@ -274,6 +249,38 @@ define(function(require, exports, module){
     Stream.prototype.constructor = Stream;
 
     Stream.prototype.subscribe = function(source){
+        var self = this;
+
+        (function(id){
+            self._sources.push(source);
+
+            var setHandler = function(){ self._sourceData[id].type = EVENTS.SET; }
+            var startHandler = function(){ self._sourceData[id].type = EVENTS.START; }
+            var updateHandler = function(){ self._sourceData[id].type = EVENTS.UPDATE; }
+            var endHandler = function(){ self._sourceData[id].type = EVENTS.END; }
+
+            self._sourceData.push({
+                type: '',
+                set: setHandler,
+                start: startHandler,
+                update: updateHandler,
+                end: endHandler
+            });
+
+            source.on(EVENTS.SET, setHandler);
+            source.on(EVENTS.START, startHandler);
+            source.on(EVENTS.UPDATE, updateHandler);
+            source.on(EVENTS.END, endHandler);
+        })(this._sources.length);
+
+        // if (source.locked) {
+        //     this.lockedCounter++;
+        //     if (this.lockedCounter === 1){
+        //         this.locked = true;
+        //         this._output.emit('lock', this);
+        //     }
+        // }
+
         return StreamInput.prototype.subscribe.apply(this._input, arguments);
         // if (success) {
         //     // if (source.locked) {
@@ -296,6 +303,26 @@ define(function(require, exports, module){
     Stream.prototype.onSubscribe = true;
 
     Stream.prototype.unsubscribe = function(source){
+        if (!source){
+            for (var i = this._input.upstream.length - 1; i >= 0; i--){
+                var source = this._input.upstream[i]
+                this.unsubscribe(source);
+            }
+        }
+        else {
+            var id = this._sources.indexOf(source);
+
+            if (id < 0) return;
+
+            source.off(EVENTS.SET, this._sourceData[id].set);
+            source.off(EVENTS.START, this._sourceData[id].start);
+            source.off(EVENTS.UPDATE, this._sourceData[id].update);
+            source.off(EVENTS.END, this._sourceData[id].end);
+
+            this._sources.splice(id, 1);
+            this._sourceData.splice(id, 1);
+        }
+
         return StreamInput.prototype.unsubscribe.apply(this._input, arguments);
         // if (success) {
             // if (source.locked) {
@@ -339,6 +366,36 @@ define(function(require, exports, module){
     Stream.prototype.get = function(){
         return StreamOutput.prototype.get.apply(this._output, arguments);
     };
+
+    function collapse(data, startCounter){
+        var result = '';
+        var hasStart = false;
+        var hasEnd = false;
+        var hasSet = false;
+
+        for (var i = 0; i < data.length; i++){
+            var datum = data[i];
+            switch (datum.type){
+                case EVENTS.UPDATE:
+                    return EVENTS.UPDATE;
+                    break;
+                case EVENTS.START:
+                    hasStart = true;
+                    break;
+                case EVENTS.SET:
+                    hasSet = true;
+                    break;
+                case EVENTS.END:
+                    hasEnd = true;
+                    break;
+            }
+        }
+
+        if (hasStart && !hasEnd) return EVENTS.START;
+        else if (hasEnd && hasStart) return EVENTS.UPDATE;
+        else if (hasEnd) return EVENTS.END;
+        else return EVENTS.SET;
+    }
 
     module.exports = Stream;
 });
