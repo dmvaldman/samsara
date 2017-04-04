@@ -64,6 +64,7 @@ define(function(require, exports, module) {
         var result;
         if (nodeStore.length === 0){
             result = document.createElement(type);
+            result.style.opacity = 0
             this.container.appendChild(result);
         }
         else result = nodeStore.shift();
@@ -77,6 +78,7 @@ define(function(require, exports, module) {
      * @param element {Node} DOM element
      */
     DOMAllocator.prototype.deallocate = function deallocate(element) {
+        element.style.opacity = 0
         var nodeType = element.nodeName.toLowerCase();
         var nodeStore = this.detachedNodes[nodeType];
         nodeStore.push(element);
