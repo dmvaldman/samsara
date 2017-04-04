@@ -52,7 +52,7 @@ define(function(require, exports, module){
 
         EventHandler.setInputHandler(this, this._eventInput);
         EventHandler.setOutputHandler(this, this._eventOutput);
-        
+
         this._eventInput.on('twoFingerStart', start.bind(this));
         this._eventInput.on('twoFingerUpdate', update.bind(this));
         this._eventInput.on('twoFingerEnd', end.bind(this));
@@ -99,28 +99,16 @@ define(function(require, exports, module){
     function update(data){
         var center = TwoFingerInput.calculateCenter.call(this, data[0].position, data[1].position);
         var distance = TwoFingerInput.calculateDistance.call(this, data[0].position, data[1].position);
-        var velocity = TwoFingerInput.calculateVelocity.call(this, data[0].velocity, data[1].velocity);
         var currDirection = TwoFingerInput.calculateOrientation.call(this, data[0].position, data[1].position);
 
         var changedDirection = TwoFingerInput.detectOrientationChange.call(this, currDirection, this.direction);
         var scale = this.options.scale;
         var delta;
 
-        if (this.options.direction === undefined){
-            if (changedDirection){
-                distance[0] *= -1;
-                distance[1] *= -1;
-            }
+        if (changedDirection) distance *= -1;
+        delta = scale * (distance - this.value);
 
-            delta = [
-                scale * (distance[0] - this.value[0]),
-                scale * (distance[1] - this.value[1])
-            ];
-        }
-        else {
-            if (changedDirection) distance *= -1;
-            delta = scale * (distance - this.value);
-        }
+        var velocity = 2 * delta / (data[0].dt + data[1].dt);
 
         var payload = this.payload;
         payload.delta = delta;
