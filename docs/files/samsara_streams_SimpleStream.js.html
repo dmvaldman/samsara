@@ -23,12 +23,12 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.2.0</b>
+                    API Docs for Version: <b>0.2.2</b>
                 </p>
             </li>
         </div>
         <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
-            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes..." data-obj='["classes/Core.Controller", "classes/Core.ElementAllocator", "classes/Core.ElementOutput", "classes/Core.Engine", "classes/Core.LayoutNode", "classes/Core.OptionsManager", "classes/Core.SizeNode", "classes/Core.SUE", "classes/Core.Timer", "classes/Core.Transform", "classes/Core.Transitionable", "classes/Core.View", "classes/DOM.ContainerSurface", "classes/DOM.Context", "classes/DOM.Surface", "classes/Events.EventEmitter", "classes/Events.EventFilter", "classes/Events.EventHandler", "classes/Events.EventMapper", "classes/Events.EventSplitter", "classes/Inputs.GenericInput", "classes/Inputs.MouseInput", "classes/Inputs.PinchInput", "classes/Inputs.RotateInput", "classes/Inputs.ScaleInput", "classes/Inputs.ScrollInput", "classes/Inputs.TouchInput", "classes/Inputs.TouchTracker", "classes/Inputs.TwoFingerInput", "classes/Layouts.DrawerLayout", "classes/Layouts.FlexibleLayout", "classes/Layouts.GridLayout", "classes/Layouts.SequentialLayout", "classes/RenderTreeNode", "classes/RootNode", "classes/Streams.Accumulator", "classes/Streams.Differential", "classes/Streams.Observable", "classes/Streams.ResizeStream", "classes/Streams.SimpleStream", "classes/Streams.Stream", "classes/Transitions.Inertia", "classes/Transitions.Spring", "classes/Transitions.Tween"]'>
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes..." data-obj='["classes/Core.Controller", "classes/Core.DOMAllocator", "classes/Core.DOMOutput", "classes/Core.Engine", "classes/Core.LayoutNode", "classes/Core.Node", "classes/Core.OptionsManager", "classes/Core.RenderTreeNode", "classes/Core.RootNode", "classes/Core.SizeNode", "classes/Core.Timer", "classes/Core.Transform", "classes/Core.Transitionable", "classes/Core.View", "classes/DOM.ContainerSurface", "classes/DOM.Context", "classes/DOM.Surface", "classes/Events.EventEmitter", "classes/Events.EventFilter", "classes/Events.EventHandler", "classes/Events.EventMapper", "classes/Events.EventSplitter", "classes/Inputs.GenericInput", "classes/Inputs.MouseInput", "classes/Inputs.PinchInput", "classes/Inputs.RotateInput", "classes/Inputs.ScaleInput", "classes/Inputs.ScrollInput", "classes/Inputs.TouchInput", "classes/Inputs.TouchTracker", "classes/Inputs.TwoFingerInput", "classes/Layouts.BidirectionalList", "classes/Layouts.DrawerLayout", "classes/Layouts.FlexLayout", "classes/Layouts.GridLayout", "classes/Layouts.HeaderFooterLayout", "classes/Layouts.SequentialLayout", "classes/Streams.Accumulator", "classes/Streams.Differential", "classes/Streams.Observable", "classes/Streams.SimpleStream", "classes/Streams.Stream", "classes/Transitions.Inertia", "classes/Transitions.Spring", "classes/Transitions.Tween", "classes/UI.Fingers", "classes/UI.Slider"]'>
         </form>
     </div>
 </div>
@@ -69,13 +69,17 @@
 	                            <li><a href="../classes/Inputs.ScaleInput.html">Inputs.ScaleInput</a></li>
 	                            <li><a href="../classes/Inputs.ScrollInput.html">Inputs.ScrollInput</a></li>
 	                            <li><a href="../classes/Inputs.TouchInput.html">Inputs.TouchInput</a></li>
+	                            <li><a href="../classes/Layouts.BidirectionalList.html">Layouts.BidirectionalList</a></li>
 	                            <li><a href="../classes/Layouts.DrawerLayout.html">Layouts.DrawerLayout</a></li>
-	                            <li><a href="../classes/Layouts.FlexibleLayout.html">Layouts.FlexibleLayout</a></li>
+	                            <li><a href="../classes/Layouts.FlexLayout.html">Layouts.FlexLayout</a></li>
 	                            <li><a href="../classes/Layouts.GridLayout.html">Layouts.GridLayout</a></li>
+	                            <li><a href="../classes/Layouts.HeaderFooterLayout.html">Layouts.HeaderFooterLayout</a></li>
 	                            <li><a href="../classes/Layouts.SequentialLayout.html">Layouts.SequentialLayout</a></li>
 	                            <li><a href="../classes/Streams.Accumulator.html">Streams.Accumulator</a></li>
 	                            <li><a href="../classes/Streams.Differential.html">Streams.Differential</a></li>
 	                            <li><a href="../classes/Streams.Stream.html">Streams.Stream</a></li>
+	                            <li><a href="../classes/UI.Fingers.html">UI.Fingers</a></li>
+	                            <li><a href="../classes/UI.Slider.html">UI.Slider</a></li>
 	                    </ul>
 	                </div>
 	    
@@ -154,9 +158,10 @@ define(function(require, exports, module) {
      *  with a modified (mapped) data payload.
      *
      * @method map
-     * @param mapperFn {Function}   Function to map event payload
+     * @param mapperFn {Function}    Function to map event payload
+     * @return stream {SimpleStream} Mapped stream
      */
-    SimpleStream.prototype.map = function(mapperFn){
+    SimpleStream.prototype.map = function map(mapperFn){
         var stream = new SimpleStream();
         var mapper = new EventMapper(mapperFn);
         stream.subscribe(mapper).subscribe(this);
@@ -166,12 +171,13 @@ define(function(require, exports, module) {
     /**
      * Filter converts the current stream into a new stream
      *  that only emits if the filter condition is satisfied.
-     *  The function should return a Boolean.
+     *  The filter function should return a Boolean value.
      *
      * @method filter
-     * @param filterFn {Function}   Function to filter event payload
+     * @param filterFn {Function}    Function to filter event payload
+     * @return stream {SimpleStream} Filtered stream
      */
-    SimpleStream.prototype.filter = function(filterFn){
+    SimpleStream.prototype.filter = function filter(filterFn){
         var filter = new EventFilter(filterFn);
         var filteredStream = new SimpleStream();
         filteredStream.subscribe(filter).subscribe(this);
@@ -180,74 +186,32 @@ define(function(require, exports, module) {
 
     /**
      * Split maps one of several streams based on custom logic.
-     *  The function should return an EventEmitter.
+     *  The splitter function should return an EventEmitter type.
      *
      * @method split
      * @param splitterFn {Function}  Splitter function
      */
-    SimpleStream.prototype.split = function(splitterFn){
+    SimpleStream.prototype.split = function split(splitterFn){
         var splitter = new EventSplitter(splitterFn);
-        var splitStream = new SimpleStream();
-        splitStream.subscribe(splitter).subscribe(this);
-        return splitStream;
+        splitter.subscribe(this);
     };
 
     /**
      * Pluck is an opinionated mapper. It projects a Stream
      *  onto one of its return values.
      *
-     *  Useful if a Stream returns an array or an object.
+     *  Useful if a Stream returns an array or object.
      *
      * @method pluck
-     * @param key {String|Number}   Key to project event payload onto
+     * @param key {String|Number}    Key to project event payload onto
+     * @return stream {SimpleStream} Plucked stream
      */
-    SimpleStream.prototype.pluck = function(key){
+    SimpleStream.prototype.pluck = function pluck(key){
         return this.map(function(value){
             return value[key];
         });
     };
-
-    //TODO: can this be inherited by other streams?
-    SimpleStream.merge = function(){};
-
-    /**
-     * Lift is like map, except it maps several event sources,
-     *  not only one.
-     *
-     *  @example
-     *
-     *      var liftedStream = SimpleStream.lift(function(payload1, payload2){
-     *          return payload1 + payload2;
-     *      }, [stream2, stream2]);
-     *
-     *      liftedStream.on(&#x27;name&#x27;), function(data){
-     *          // data = 3;
-     *      });
-     *
-     *      stream2.emit(&#x27;name&#x27;, 1);
-     *      stream2.emit(&#x27;name&#x27;, 2);
-     *
-     * @method lift
-     * @static
-     * @param map {Function}            Function to map stream payloads
-     * @param streams {Array|Object}    Stream sources
-     */
-    SimpleStream.lift = function(map, streams){
-        //TODO: fix comma separated arguments
-        var mergedStream = (streams instanceof Array)
-            ? this.merge(streams)
-            : this.merge.apply(null, Array.prototype.splice.call(arguments, 1));
-
-        var mappedStream = new EventMapper(function liftMap(data){
-            return map.apply(null, data);
-        });
-
-        var liftedStream = new SimpleStream();
-        liftedStream.subscribe(mappedStream).subscribe(mergedStream);
-
-        return liftedStream;
-    };
-
+    
     module.exports = SimpleStream;
 });
 

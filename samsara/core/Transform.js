@@ -390,18 +390,6 @@ define(function(require, exports, module) {
     };
 
     /**
-     * Returns a perspective Transform.
-     *
-     * @method perspective
-     * @static
-     * @param w {Number}       z-depth of focal point
-     * @return {Array}
-     */
-    Transform.perspective = function perspective(w) {
-        return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, -1 / w, 0, 0, 0, 1];
-    };
-
-    /**
      * Return translation vector component of the given Transform.
      *
      * @method getTranslate
@@ -460,7 +448,9 @@ define(function(require, exports, module) {
     };
 
     function normSquared(v) {
-        return v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+        return (v.length === 2)
+            ? v[0] * v[0] + v[1] * v[1]
+            : v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
     }
     function norm(v) {
         return Math.sqrt(normSquared(v));
@@ -475,15 +465,15 @@ define(function(require, exports, module) {
      * @method interpret
      * @static
      * @private
-     * @param t {Transform}     Transform
+     * @param T {Transform}     Transform
      * @return {Object}
      */
-    Transform.interpret = function interpret(t) {
+    Transform.interpret = function interpret(T) {
         // QR decomposition via Householder reflections
         // FIRST ITERATION
 
         //default Q1 to the identity matrix;
-        var x = [t[0], t[1], t[2]];                // first column vector
+        var x = [T[0], T[1], T[2]];                // first column vector
         var sgn = sign(x[0]);                      // sign of first component of x (for stability)
         var xNorm = norm(x);                       // norm of first column vector
         var v = [x[0] + sgn * xNorm, x[1], x[2]];  // v = x + sign(x[0])|x|e1
@@ -492,7 +482,7 @@ define(function(require, exports, module) {
         //bail out if our Matrix is singular
         if (mult >= Infinity) {
             return {
-                translate: Transform.getTranslate(t),
+                translate: Transform.getTranslate(T),
                 rotate: [0, 0, 0],
                 scale: [0, 0, 0],
                 skew: [0, 0, 0]
@@ -518,7 +508,7 @@ define(function(require, exports, module) {
         Q1[9] = Q1[6];                      // 2,1 entry
 
         //reduce first column of M
-        var MQ1 = Transform.compose(Q1, t);
+        var MQ1 = Transform.compose(Q1, T);
 
         // SECOND ITERATION on (1,1) minor
         var x2 = [MQ1[5], MQ1[6]];
@@ -540,16 +530,16 @@ define(function(require, exports, module) {
 
         //calc QR decomposition. Q = Q1*Q2, R = Q'*M
         var Q = Transform.compose(Q2, Q1);      //note: really Q transpose
-        var R = Transform.compose(Q, t);
+        var R = Transform.compose(Q, T);
 
         //remove negative scaling
-        var remover = Transform.scale(R[0] < 0 ? -1 : 1, R[5] < 0 ? -1 : 1, R[10] < 0 ? -1 : 1);
+        var remover = Transform.scale([R[0] < 0 ? -1 : 1, R[5] < 0 ? -1 : 1, R[10] < 0 ? -1 : 1]);
         R = Transform.compose(R, remover);
         Q = Transform.compose(remover, Q);
 
         // decompose into rotate/scale/skew matrices
         var result = {};
-        result.translate = Transform.getTranslate(t);
+        result.translate = Transform.getTranslate(T);
         result.rotate = [Math.atan2(-Q[6], Q[10]), Math.asin(Q[2]), Math.atan2(-Q[1], Q[0])];
         if (!result.rotate[0]) {
             result.rotate[0] = 0;

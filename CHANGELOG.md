@@ -1,3 +1,94 @@
+## 0.2.4
+
+**General**
+- Add Sphere example
+- Add Camera directory with:
+    - `Quaternion.js` - Math library for quaternionic math
+    - `QuatTransitionable.js` - Extension of `Transitionable` to `Quaternions` with slerping
+    - `Camera` - Generic camera class
+    - `TrackballCamera` - Trackball camera for rotating and scaling objects in 3D using mouse and touch gestures
+
+**DOM**
+- Fix `roundToPixel` is `Surface` and `Context` cfb7952
+- Call `event.stopPropagation` on DOM events dffba67
+- Suppress "ghost" mouse DOM events that fire with touch events 4f7d358
+
+**Core**
+- Fix bugs in `Transform.interpet` 0341a41, 34ab1a6
+- `Transitionable` now acts as a shell for interpolation engines 01f6374
+- Fix `true`-sizing bug 16f3b18
+
+**Inputs**
+- Add `x` and `y` `pageX/Y` positions to `MouseInput` and `TouchInput` dacf532
+- Fix options passed in with inputs for `GenericInput` 8d14d80
+- Fix `PinchInput` and `ScaleInput` velocity calculation 9c79999
+- No `touchmove` event propagation unless the touch has actually moved 2a3f653
+
+## 0.2.3
+
+- Forget to update distribution files in 0.2.2 upgrade :-)
+
+## 0.2.2
+
+**General**
+- Add samsarajs to Bower thanks to @richardkopelow
+- Add eslint
+- `Size` properties can now take functions
+- New demos of Sequential layouts
+- Update license
+- New UI folder with some UI elements (`Slider` and `Fingers`)
+- More tests
+- Update docs
+- Update examples, including new layout examples
+
+**Core**
+- Fix first frame bug with Promise microtask in `Engine`
+- `View` has `setMargins` method
+- Improve `window` resize responsiveness
+- `ElementAllocator` and `ElementOutput` renamed and moved to `dom` directory
+- `SizeNode` removed. Now resizing fits with `start/update/end` API by debouncing the resize event.
+- Remove `SUE`
+- Create `nodes` folder and move `SizeNode`, `LayoutNode`, and `Node` there
+
+**DOM**
+- `will-change` event called on `start` of animation, and removed on `end`
+- `Surface` has `once` method that fallbacks to its `EventEmitter`
+- Fix `setPerspective` call on`Context` if not yet added to DOM
+
+**Events**
+- `EventHandler's` `off` method provided by @jd-carroll
+
+**Streams**
+- Remove `resize` event in favor of `start/update/end` for size.
+- Add `ReduceStream` for functional reductions of streams
+
+**Inputs**
+- Performance improvements in `TouchTracker`
+- `TwoFingerInput` uses `TouchInput`
+- Native browser `event` is passed though inputs. `ClientX` etc properties are removed.
+- Rename `TouchTracker` and `TwoFingerInput` to have underscores to indicate their privateness
+- Remove `ResizeStream`
+- Remove `SizeObservable`
+
+**Layouts**
+- Add `HeaderFooterLayout`
+- Update `FlexLayout` and `SequentialLayout` with new `ReduceStream`
+- `Scrollview` has `enableMouseDrag` options
+
+**Transitions**
+- Rename physics transitions filenames with underscores. E.g., Spring.js -> _Spring.js
+
+**UI**
+- Add `Fingers.js` (useful for visualizing multitouch)
+- Add `Slider.js`
+
+**Examples**
+- Add `Layouts` folder with examples for
+    - `FlexLayout`
+    - `HeaderFooterLayout`
+    - `GridLayout` (work in progress)
+- Update other examples with new functional `size` property API
+
 ## 0.2.1
 
 **General**
@@ -93,7 +184,7 @@
 - UPDATE `View` has `getSize` method
 
 **DOM**
-- UPDATE `Surface` has `enableScroll` option supporting native scrolling. 
+- UPDATE `Surface` has `enableScroll` option supporting native scrolling.
 
 **Transitions**
 - ADD physics transitions `Spring` and `Inertia`
@@ -128,7 +219,7 @@
 - MOVE `EventHandler` and `EventEmitter` to `events` directory
 - UPDATE `samsara.css` for streamlining. Delete from `core` directory
 - UPDATE require.js paths to be relative
- 
+
 **Core**
 
 - UPDATE `Engine` to private class. Strip DOM dependency.
@@ -146,13 +237,13 @@
 
 **General**
 
-- UPDATE documentation. Many more examples. 
+- UPDATE documentation. Many more examples.
 - UPDATE Samsara.css. `samsara-surface` no longer has `preserve-3d` and
  `samsara-context` doesn't assume full-screen mode.
 
 **Core**
 
-- UPDATE `Context` to support taking pre-existing DOM elements 
+- UPDATE `Context` to support taking pre-existing DOM elements
 - UPDATE `SizeNode` and `Surface` to accept aspect ratios
 - UPDATE Commit functions removed. Stream all the things!
 - UPDATE `resize` event emitted in `Surface`
@@ -177,7 +268,7 @@
 **General**
 
 - UPDATE documentation
-	
+
 **Core**
 
 - ADD `Engine.size` property
@@ -185,7 +276,7 @@
 - ADD `Transform.scaleX/Y/Z` methods
 - FIX `Surface` dirtying
 - FIX `Surface` overriding content of pre-existing elements
-	
+
 **Layouts**
 
 - ADD `GridLayout`

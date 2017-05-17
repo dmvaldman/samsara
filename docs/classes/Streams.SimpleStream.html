@@ -23,12 +23,12 @@
             <li class="divider-vertical"></li>
             <li>
                 <p class="navbar-text">
-                    API Docs for Version: <b>0.2.0</b>
+                    API Docs for Version: <b>0.2.2</b>
                 </p>
             </li>
         </div>
         <form class="navbar-form pull-right" style="line-height: 40px; height: 40px;">
-            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes..." data-obj='["classes/Core.Controller", "classes/Core.ElementAllocator", "classes/Core.ElementOutput", "classes/Core.Engine", "classes/Core.LayoutNode", "classes/Core.OptionsManager", "classes/Core.SizeNode", "classes/Core.SUE", "classes/Core.Timer", "classes/Core.Transform", "classes/Core.Transitionable", "classes/Core.View", "classes/DOM.ContainerSurface", "classes/DOM.Context", "classes/DOM.Surface", "classes/Events.EventEmitter", "classes/Events.EventFilter", "classes/Events.EventHandler", "classes/Events.EventMapper", "classes/Events.EventSplitter", "classes/Inputs.GenericInput", "classes/Inputs.MouseInput", "classes/Inputs.PinchInput", "classes/Inputs.RotateInput", "classes/Inputs.ScaleInput", "classes/Inputs.ScrollInput", "classes/Inputs.TouchInput", "classes/Inputs.TouchTracker", "classes/Inputs.TwoFingerInput", "classes/Layouts.DrawerLayout", "classes/Layouts.FlexibleLayout", "classes/Layouts.GridLayout", "classes/Layouts.SequentialLayout", "classes/RenderTreeNode", "classes/RootNode", "classes/Streams.Accumulator", "classes/Streams.Differential", "classes/Streams.Observable", "classes/Streams.ResizeStream", "classes/Streams.SimpleStream", "classes/Streams.Stream", "classes/Transitions.Inertia", "classes/Transitions.Spring", "classes/Transitions.Tween"]'>
+            <input style="margin-top: 0;" type="text" class="search-query" placeholder="Search for classes..." data-obj='["classes/Core.Controller", "classes/Core.DOMAllocator", "classes/Core.DOMOutput", "classes/Core.Engine", "classes/Core.LayoutNode", "classes/Core.Node", "classes/Core.OptionsManager", "classes/Core.RenderTreeNode", "classes/Core.RootNode", "classes/Core.SizeNode", "classes/Core.Timer", "classes/Core.Transform", "classes/Core.Transitionable", "classes/Core.View", "classes/DOM.ContainerSurface", "classes/DOM.Context", "classes/DOM.Surface", "classes/Events.EventEmitter", "classes/Events.EventFilter", "classes/Events.EventHandler", "classes/Events.EventMapper", "classes/Events.EventSplitter", "classes/Inputs.GenericInput", "classes/Inputs.MouseInput", "classes/Inputs.PinchInput", "classes/Inputs.RotateInput", "classes/Inputs.ScaleInput", "classes/Inputs.ScrollInput", "classes/Inputs.TouchInput", "classes/Inputs.TouchTracker", "classes/Inputs.TwoFingerInput", "classes/Layouts.BidirectionalList", "classes/Layouts.DrawerLayout", "classes/Layouts.FlexLayout", "classes/Layouts.GridLayout", "classes/Layouts.HeaderFooterLayout", "classes/Layouts.SequentialLayout", "classes/Streams.Accumulator", "classes/Streams.Differential", "classes/Streams.Observable", "classes/Streams.SimpleStream", "classes/Streams.Stream", "classes/Transitions.Inertia", "classes/Transitions.Spring", "classes/Transitions.Tween", "classes/UI.Fingers", "classes/UI.Slider"]'>
         </form>
     </div>
 </div>
@@ -69,13 +69,17 @@
 	                            <li><a href="../classes/Inputs.ScaleInput.html">Inputs.ScaleInput</a></li>
 	                            <li><a href="../classes/Inputs.ScrollInput.html">Inputs.ScrollInput</a></li>
 	                            <li><a href="../classes/Inputs.TouchInput.html">Inputs.TouchInput</a></li>
+	                            <li><a href="../classes/Layouts.BidirectionalList.html">Layouts.BidirectionalList</a></li>
 	                            <li><a href="../classes/Layouts.DrawerLayout.html">Layouts.DrawerLayout</a></li>
-	                            <li><a href="../classes/Layouts.FlexibleLayout.html">Layouts.FlexibleLayout</a></li>
+	                            <li><a href="../classes/Layouts.FlexLayout.html">Layouts.FlexLayout</a></li>
 	                            <li><a href="../classes/Layouts.GridLayout.html">Layouts.GridLayout</a></li>
+	                            <li><a href="../classes/Layouts.HeaderFooterLayout.html">Layouts.HeaderFooterLayout</a></li>
 	                            <li><a href="../classes/Layouts.SequentialLayout.html">Layouts.SequentialLayout</a></li>
 	                            <li><a href="../classes/Streams.Accumulator.html">Streams.Accumulator</a></li>
 	                            <li><a href="../classes/Streams.Differential.html">Streams.Differential</a></li>
 	                            <li><a href="../classes/Streams.Stream.html">Streams.Stream</a></li>
+	                            <li><a href="../classes/UI.Fingers.html">UI.Fingers</a></li>
+	                            <li><a href="../classes/UI.Slider.html">UI.Slider</a></li>
 	                    </ul>
 	                </div>
 	    
@@ -207,11 +211,6 @@ transform one stream into another.</p>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#" data-tabid="#methods" data-anchor="#method_lift" data-tablink="lift">lift</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
                                 <a href="#" data-tabid="#methods" data-anchor="#method_map" data-tablink="map">map</a>
 
                             </li>
@@ -244,6 +243,9 @@ transform one stream into another.</p>
                                 </ul><span class="paren">)</span>
                             </div>
                     
+                            <span class="returns-inline">
+                                <span class="type">SimpleStream</span>
+                            </span>
                     
                     
                     
@@ -257,7 +259,7 @@ transform one stream into another.</p>
                                     <!--Defined in-->
                                     <!---->
                             <!---->
-                            <!--<a href="../files/samsara_streams_SimpleStream.js.html#l43"><code>samsara&#x2F;streams&#x2F;SimpleStream.js:43</code></a>-->
+                            <!--<a href="../files/samsara_streams_SimpleStream.js.html#l44"><code>samsara&#x2F;streams&#x2F;SimpleStream.js:44</code></a>-->
                             <!---->
                             </p>
                     
@@ -268,7 +270,7 @@ transform one stream into another.</p>
                         <div class="description">
                             <p>Filter converts the current stream into a new stream
                     that only emits if the filter condition is satisfied.
-                    The function should return a Boolean.</p>
+                    The filter function should return a Boolean value.</p>
                     
                         </div>
                     
@@ -290,97 +292,16 @@ transform one stream into another.</p>
                                 </ul>
                             </div>
                     
+                            <div class="returns">
+                                <h4>Returns:</h4>
                     
-                    </div>
-                    <div id="method_lift" class="method item">
-                        <h3 class="name"><code>lift</code></h3>
-                    
-                            <div class="args">
-                                <span class="paren">(</span><ul class="args-list inline commas">
-                                    <li class="arg">
-                                            <code>map</code>
-                                    </li>
-                                    <li class="arg">
-                                            <code>streams</code>
-                                    </li>
-                                </ul><span class="paren">)</span>
-                            </div>
-                    
-                    
-                    
-                    
-                    
-                            <span class="flag static">static</span>
-                    
-                    
-                    
-                        <div class="meta">
-                                    <p>
-                                    <!---->
-                                    <!--Defined in-->
-                                    <!---->
-                            <!---->
-                            <!--<a href="../files/samsara_streams_SimpleStream.js.html#l90"><code>samsara&#x2F;streams&#x2F;SimpleStream.js:90</code></a>-->
-                            <!---->
-                            </p>
-                    
-                    
-                    
-                        </div>
-                    
-                        <div class="description">
-                            <p>Lift is like map, except it maps several event sources,
-                    not only one.</p>
-                    
-                        </div>
-                    
-                            <div class="params">
-                                <h4>Parameters:</h4>
-                    
-                                <ul class="params-list">
-                                    <li class="param">
-                                            <code class="param-name">map</code>
-                                            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
-                    
-                    
-                                        <div class="param-description">
-                                            <p>Function to map stream payloads</p>
-                    
-                                        </div>
-                    
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name">streams</code>
-                                            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a> | <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                    
-                    
-                                        <div class="param-description">
-                                            <p>Stream sources</p>
-                    
-                                        </div>
-                    
-                                    </li>
-                                </ul>
-                            </div>
-                    
-                    
-                            <div class="example">
-                                <h4>Example:</h4>
-                    
-                                <div class="example-content">
-                                    <pre class="code prettyprint"><code> var liftedStream = SimpleStream.lift(function(payload1, payload2){
-                         return payload1 + payload2;
-                     }, [stream2, stream2]);
-                    
-                     liftedStream.on('name'), function(data){
-                         // data = 3;
-                     });
-                    
-                     stream2.emit('name', 1);
-                     stream2.emit('name', 2);</code></pre>
+                                <div class="returns-description">
+                                            <span class="type">SimpleStream</span>:
+                                        <p>stream  Filtered stream</p>
                     
                                 </div>
                             </div>
+                    
                     </div>
                     <div id="method_map" class="method item">
                         <h3 class="name"><code>map</code></h3>
@@ -393,6 +314,9 @@ transform one stream into another.</p>
                                 </ul><span class="paren">)</span>
                             </div>
                     
+                            <span class="returns-inline">
+                                <span class="type">SimpleStream</span>
+                            </span>
                     
                     
                     
@@ -438,6 +362,15 @@ transform one stream into another.</p>
                                 </ul>
                             </div>
                     
+                            <div class="returns">
+                                <h4>Returns:</h4>
+                    
+                                <div class="returns-description">
+                                            <span class="type">SimpleStream</span>:
+                                        <p>stream  Mapped stream</p>
+                    
+                                </div>
+                            </div>
                     
                     </div>
                     <div id="method_pluck" class="method item">
@@ -451,6 +384,9 @@ transform one stream into another.</p>
                                 </ul><span class="paren">)</span>
                             </div>
                     
+                            <span class="returns-inline">
+                                <span class="type">SimpleStream</span>
+                            </span>
                     
                     
                     
@@ -475,7 +411,7 @@ transform one stream into another.</p>
                         <div class="description">
                             <p>Pluck is an opinionated mapper. It projects a Stream
                     onto one of its return values.</p>
-                    <p>Useful if a Stream returns an array or an object.</p>
+                    <p>Useful if a Stream returns an array or object.</p>
                     
                         </div>
                     
@@ -497,6 +433,15 @@ transform one stream into another.</p>
                                 </ul>
                             </div>
                     
+                            <div class="returns">
+                                <h4>Returns:</h4>
+                    
+                                <div class="returns-description">
+                                            <span class="type">SimpleStream</span>:
+                                        <p>stream  Plucked stream</p>
+                    
+                                </div>
+                            </div>
                     
                     </div>
                     <div id="method_split" class="method item">
@@ -523,7 +468,7 @@ transform one stream into another.</p>
                                     <!--Defined in-->
                                     <!---->
                             <!---->
-                            <!--<a href="../files/samsara_streams_SimpleStream.js.html#l58"><code>samsara&#x2F;streams&#x2F;SimpleStream.js:58</code></a>-->
+                            <!--<a href="../files/samsara_streams_SimpleStream.js.html#l60"><code>samsara&#x2F;streams&#x2F;SimpleStream.js:60</code></a>-->
                             <!---->
                             </p>
                     
@@ -533,7 +478,7 @@ transform one stream into another.</p>
                     
                         <div class="description">
                             <p>Split maps one of several streams based on custom logic.
-                    The function should return an EventEmitter.</p>
+                    The splitter function should return an EventEmitter type.</p>
                     
                         </div>
                     
