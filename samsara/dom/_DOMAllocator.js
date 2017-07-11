@@ -18,6 +18,7 @@ define(function(require, exports, module) {
     function DOMAllocator(container) {
         this.set(container);
         this.detachedNodes = {};
+        this.detachedNodesFragment = document.createDocumentFragment()
     }
 
     /**
@@ -79,6 +80,7 @@ define(function(require, exports, module) {
      */
     DOMAllocator.prototype.deallocate = function deallocate(element) {
         element.style.opacity = 0
+        this.detachedNodesFragment.appendChild(element)
         var nodeType = element.nodeName.toLowerCase();
         var nodeStore = this.detachedNodes[nodeType];
         nodeStore.push(element);
