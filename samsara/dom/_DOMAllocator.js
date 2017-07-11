@@ -66,9 +66,9 @@ define(function(require, exports, module) {
         if (nodeStore.length === 0){
             result = document.createElement(type);
             result.style.opacity = 0
-            this.container.appendChild(result);
         }
         else result = nodeStore.shift();
+        this.container.appendChild(result);
         return result;
     };
 
