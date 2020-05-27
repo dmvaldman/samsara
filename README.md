@@ -47,6 +47,10 @@ is designed to be friends with them.
 | SideMenu | [demo](http://samsarajs.org/demos/SideMenu/index.html) • [docs](http://samsarajs.org/demos/SideMenu/docs/main.html) | A navigation UI with an exposed side drawer |
 | Safari Tabs | [demo](http://samsarajs.org/demos/SafariTabs/index.html) • [docs](http://samsarajs.org/demos/SafariTabs/docs/main.html) | A scrollview imitating the mobile Safari tab viewer |
 
+Here's a video of a demo of an interactive helical arrangement of divs.
+
+[![Helix](https://i.imgur.com/e8eFUHL.png)](https://www.youtube.com/watch?v=Y6ubNsMTSjw)
+
 ## Installation
 
 SamsaraJS requires a small CSS file located at `dist/samsara.css` or `samsara/samsara.css`. For all of the installation methods
