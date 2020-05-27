@@ -17,7 +17,6 @@ define(function(require, exports, module) {
      */
     function DOMAllocator(container) {
         this.set(container);
-        this.detachedNodes = {};
     }
 
     /**
@@ -58,15 +57,9 @@ define(function(require, exports, module) {
      * @return {Node}
      */
     DOMAllocator.prototype.allocate = function allocate(type) {
-        type = type.toLowerCase();
-        if (!(type in this.detachedNodes)) this.detachedNodes[type] = [];
-        var nodeStore = this.detachedNodes[type];
-        var result;
-        if (nodeStore.length === 0){
-            result = document.createElement(type);
-            this.container.appendChild(result);
-        }
-        else result = nodeStore.shift();
+        var result = document.createElement(type);
+        result.style.opacity = 0
+        this.container.appendChild(result);
         return result;
     };
 
@@ -77,9 +70,7 @@ define(function(require, exports, module) {
      * @param element {Node} DOM element
      */
     DOMAllocator.prototype.deallocate = function deallocate(element) {
-        var nodeType = element.nodeName.toLowerCase();
-        var nodeStore = this.detachedNodes[nodeType];
-        nodeStore.push(element);
+        this.container.removeChild(element)
     };
 
     module.exports = DOMAllocator;
