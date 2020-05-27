@@ -237,11 +237,25 @@ define(function (require, exports, module) {
             var i;
 
             if (index > this._currentIndex && index < this.items.length) {
+                var scrollLength = this.getSize()[this.options.direction];
+                var totalOffset = 0;
+                var stackLength = 0;
+                for (var j = 0; j < this.items.length; j++) {
+                    var itemSize = this.items[j].getSize()[this.options.direction];;
+                    if (j < this._currentIndex) {
+                        totalOffset += itemSize;
+                    }
+                    stackLength += itemSize;
+                }
+                var deepestValue = -1 * (stackLength - scrollLength - this.itemOffset - totalOffset);
                 for (i = this._currentIndex; i < index; i++)
                     position -= this.items[i].getSize()[this.options.direction];
+                if(position < deepestValue) {
+                    position = deepestValue;
+                }
             }
             else if (index < this._currentIndex && index >= 0) {
-                for (i = this._currentIndex; i > index; i--)
+                for (i = this._currentIndex - 1; i >= index; i--)
                     position += this.items[i].getSize()[this.options.direction];
             }
 
